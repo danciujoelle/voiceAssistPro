@@ -1,0 +1,62 @@
+/* Record Call Section specific styles */
+.record-section {
+  overflow-y: auto;
+}
+
+.record-section .section-header {
+  flex-shrink: 0;
+}
+
+.record-buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.upload-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.processing-indicator {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 6px;
+  color: #1976d2;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.processing-indicator span {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 6px;
+  color: #c62828;
+  font-size: 0.875rem;
+}
+
+.transcript-section {
+  flex: 1;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+  overflow-y: auto;
+}

@@ -1,0 +1,92 @@
+/* Order Assistant Styles */
+.order-assistant {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-summary {
+  flex: 1;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.order-summary h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.summary-content p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #495057;
+}
+
+.confirm-order-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirm-order-btn:hover {
+  background-color: #1e7e34;
+}
+
+/* Order-specific status dots */
+.status-dot.order-type {
+  background-color: #17a2b8;
+}
+
+.status-dot.order-items {
+  background-color: #28a745;
+}
+
+.status-dot.order-time {
+  background-color: #ffc107;
+}
+
+.status-dot.order-total {
+  background-color: #6f42c1;
+}
+
+.info-item.total {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .order-assistant .assistant-main {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-assistant .assistant-main {
+    padding: 0.75rem;
+  }
+}

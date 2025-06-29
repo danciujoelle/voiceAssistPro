@@ -1,0 +1,52 @@
+/* Incident Location Section specific styles */
+.location-section {
+  overflow: hidden;
+}
+
+.location-section .section-header {
+  flex-shrink: 0;
+}
+
+.location-info {
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.location-detected {
+  margin: 0;
+  padding: 0.75rem;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  color: #155724;
+  font-size: 0.875rem;
+}
+
+.no-location-message {
+  text-align: center;
+  padding: 1rem;
+  color: #6c757d;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.no-location-message p {
+  margin: 0.5rem 0;
+}
+
+.help-text {
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.map-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.map-container {
+  flex: 1;
+  min-height: 0;
+}
