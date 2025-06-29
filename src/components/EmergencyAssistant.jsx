@@ -17,6 +17,12 @@ const EmergencyAssistant = () => {
 
   return (
     <div className="emergency-assistant">
+      <img 
+        src="/dispatcher-copilot.png" 
+        alt="Dispatcher Copilot" 
+        className="dispatcher-logo"
+      />
+      
       <main className="assistant-main">
         <RecordCallSection 
           onTranscriptGenerated={handleTranscriptGenerated}

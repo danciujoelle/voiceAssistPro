@@ -7,15 +7,15 @@ function App() {
   return (
     <div className="app">
       <TabsComponent defaultTab={0}>
-        <TabPanel label="Emergency Assistant" icon="🚑">
+        <TabPanel label="Dispatcher Copilot" icon="🚑">
           <EmergencyAssistant />
         </TabPanel>
-        <TabPanel label="Order Assistant" icon="🛒">
+        <TabPanel label="Order Copilot" icon="🛒">
           <OrderAssistant />
         </TabPanel>
       </TabsComponent>
     </div>
-  )
+  );
 }
 
 export default App
