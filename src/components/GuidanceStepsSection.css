@@ -40,8 +40,7 @@
 .steps-list ol {
   margin: 0;
   padding: 0;
-  list-style: none;
-  counter-reset: step-counter;
+list-style: none;
 }
 
 .step-item {
@@ -55,8 +54,7 @@
   border-left: 4px solid #ff9800;
   border-radius: 0.75rem;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  counter-increment: step-counter;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .step-item:hover {
@@ -98,9 +96,6 @@
 }
 
 /* Add numbering effect with CSS counter */
-.step-number::before {
-  content: counter(step-counter);
-}
 
 /* Priority indicators */
 .step-item.priority-high {
