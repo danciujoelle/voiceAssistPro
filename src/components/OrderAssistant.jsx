@@ -119,9 +119,10 @@ const OrderRecordSection = ({
       // Transform the data to match our component structure
       const orderData = {
         type: parsedResponse.type,
-        items: parsedResponse.items
+        items: parsedResponse.items, // Keep as array for better display
+        itemsString: parsedResponse.items
           .map((item) => `${item.quantity} ${item.name}`)
-          .join(", "),
+          .join(", "), // Keep string version for backwards compatibility
         location: parsedResponse.location,
         additionalNotes: parsedResponse.additional_notes,
         date: parsedResponse.order_date,
@@ -229,7 +230,21 @@ const OrderSummarySection = ({ orderData }) => {
 
         <div className="summary-item">
           <h3>📦 Items:</h3>
-          <p className="summary-value">{orderData.items}</p>
+          <div className="items-list">
+            {Array.isArray(orderData.items) ? (
+              orderData.items.map((item) => (
+                <div
+                  key={`${item.quantity}-${item.name}`}
+                  className="item-entry"
+                >
+                  <span className="item-quantity">{item.quantity}</span>
+                  <span className="item-name">{item.name}</span>
+                </div>
+              ))
+            ) : (
+              <p className="summary-value">{orderData.items}</p>
+            )}
+          </div>
         </div>
 
         <div className="summary-item">
@@ -255,7 +270,16 @@ const OrderSummarySection = ({ orderData }) => {
 OrderSummarySection.propTypes = {
   orderData: PropTypes.shape({
     date: PropTypes.string,
-    items: PropTypes.string,
+    items: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          quantity: PropTypes.number.isRequired,
+        })
+      ),
+    ]),
+    itemsString: PropTypes.string,
     location: PropTypes.string,
     additionalNotes: PropTypes.string,
   }),
