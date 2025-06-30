@@ -17,6 +17,7 @@
 .assistant-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
   gap: 1.5rem;
   padding: 1.5rem;
   max-width: 1400px;
@@ -24,6 +25,32 @@
   width: 100%;
 }
 
+/* Define grid areas for better layout control */
+.assistant-main>*:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.assistant-main>*:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.assistant-main>*:nth-child(3) {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.assistant-main>*:nth-child(4) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Make the incident location section span both columns */
+.assistant-main>*:nth-child(5) {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
 /* Responsive Design */
 @media (max-width: 1024px) {
   .assistant-main {

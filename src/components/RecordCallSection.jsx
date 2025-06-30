@@ -170,7 +170,7 @@ const RecordCallSection = ({
 
         <div className="upload-section">
           <label htmlFor="audio-upload" className="upload-button">
-            📁 Upload Audio File
+            � Upload Audio File
           </label>
           <input
             id="audio-upload"

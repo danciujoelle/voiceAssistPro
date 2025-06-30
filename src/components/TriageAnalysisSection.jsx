@@ -36,6 +36,23 @@ const renderUnitsWithIcons = (unitsString) => {
 };
 
 const TriageAnalysisSection = ({ emergencyData }) => {
+  const handleDispatchUnits = () => {
+    if (!emergencyData || !emergencyData.units) {
+      alert("No units available to dispatch");
+      return;
+    }
+
+    const units = emergencyData.units.split(", ").map((unit) => unit.trim());
+    const unitsList = units
+      .map((unit) => `• ${getUnitIcon(unit)} ${unit}`)
+      .join("\n");
+    const message = `Dispatching the following units:\n${unitsList}`;
+
+    if (confirm(message + "\n\nProceed with dispatch?")) {
+      // Here you would typically make an API call to dispatch the units
+      alert("Units have been dispatched successfully!");
+    }
+  };
   if (!emergencyData || !emergencyData.type) {
     return (
       <section className="triage-section">
@@ -77,6 +94,17 @@ const TriageAnalysisSection = ({ emergencyData }) => {
           </div>
           {renderUnitsWithIcons(emergencyData.units)}
         </div>
+      </div>
+
+      <div className="dispatch-section">
+        <button
+          className="dispatch-button"
+          onClick={handleDispatchUnits}
+          disabled={!emergencyData.units}
+        >
+          <span className="dispatch-icon">🚨</span>
+          <span>Dispatch Units</span>
+        </button>
       </div>
     </section>
   );

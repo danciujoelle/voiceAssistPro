@@ -161,7 +161,7 @@ const AudioRecorder = ({ onAudioRecorded }) => {
     return (
       <div className="audio-recorder permission-denied">
         <div className="permission-message">
-          <span className="permission-icon">Mic</span>
+          <span className="permission-icon">🎙️</span>
           <p>Microphone access is required for audio recording</p>
           <button onClick={requestPermission} className="permission-btn">
             Grant Permission
@@ -184,7 +184,7 @@ const AudioRecorder = ({ onAudioRecorded }) => {
             disabled={hasPermission === false}
             aria-label="Start recording"
           >
-            <span className="record-icon">Mic</span> Start Recording
+            <span className="record-icon">🎙️</span> Start Recording
           </button>
         ) : (
           <div className="recording-active">

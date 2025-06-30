@@ -36,6 +36,10 @@ body {
   flex-direction: column;
 }
 
+.location-section {
+  min-height: 500px !important;
+  max-height: 800px !important;
+}
 .section-header {
   display: flex;
   align-items: center;
