@@ -21,6 +21,14 @@ const MapComponent = ({ center, zoom, markers }) => {
     }
   }, [center, zoom, map]);
 
+  // Update map center when center prop changes
+  useEffect(() => {
+    if (map && center) {
+      map.panTo(center); // Use panTo for smooth animation instead of setCenter
+      map.setZoom(zoom);
+    }
+  }, [map, center, zoom]);
+
   useEffect(() => {
     if (map && markers.length > 0) {
       // Clear existing markers
@@ -33,6 +41,7 @@ const MapComponent = ({ center, zoom, markers }) => {
           map: map,
           title: markerData.title,
           icon: markerData.icon || null,
+          animation: window.google.maps.Animation.DROP, // Add drop animation
         });
 
         // Add info window if content is provided
@@ -51,14 +60,22 @@ const MapComponent = ({ center, zoom, markers }) => {
 
       googleMarkersRef.current = newMarkers;
 
-      // Adjust map bounds to show all markers
-      if (newMarkers.length > 1) {
+      // Center map on the first marker and set appropriate zoom
+      if (newMarkers.length === 1) {
+        map.panTo(markers[0].position); // Use panTo for smooth animation
+        map.setZoom(zoom);
+      } else if (newMarkers.length > 1) {
+        // Adjust map bounds to show all markers
         const bounds = new window.google.maps.LatLngBounds();
         markers.forEach((marker) => bounds.extend(marker.position));
         map.fitBounds(bounds);
       }
+    } else if (map && markers.length === 0) {
+      // Clear all markers if no markers provided
+      googleMarkersRef.current.forEach((marker) => marker.setMap(null));
+      googleMarkersRef.current = [];
     }
-  }, [map, markers]);
+  }, [map, markers, zoom]);
 
   // Cleanup markers on unmount
   useEffect(() => {
@@ -103,9 +120,13 @@ const MapView = ({ location, coordinates, emergencyType, urgencyLevel }) => {
         return;
       }
 
+      setLoading(true);
+      setError(null);
+
       // If we have precise coordinates from autocomplete, use them
       if (coordinates) {
         setMapCoordinates(coordinates);
+        setError(null); // Clear any previous errors
         setLoading(false);
         return;
       }
