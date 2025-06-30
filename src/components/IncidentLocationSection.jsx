@@ -5,7 +5,7 @@ import LocationAutocomplete from './LocationAutocomplete'
 import GoogleMapsWrapper from './GoogleMapsWrapper'
 import './IncidentLocationSection.css'
 
-const IncidentLocationSection = ({ emergencyData }) => {
+const IncidentLocationSection = ({ emergencyData, onLocationConfirmed }) => {
   const [confirmedLocation, setConfirmedLocation] = useState(null)
   const [isLocationConfirmed, setIsLocationConfirmed] = useState(false)
 
@@ -15,10 +15,14 @@ const IncidentLocationSection = ({ emergencyData }) => {
     setConfirmedLocation(locationData)
   }
 
-  const handleLocationConfirmed = (locationData) => {
+  const handleLocationConfirmedInternal = (locationData) => {
     console.log('Location confirmed:', locationData)
     setConfirmedLocation(locationData)
     setIsLocationConfirmed(true)
+    // Notify parent component
+    if (onLocationConfirmed) {
+      onLocationConfirmed(locationData)
+    }
   }
 
   // Use confirmed location or fall back to detected location
@@ -57,7 +61,7 @@ const IncidentLocationSection = ({ emergencyData }) => {
           <LocationAutocomplete
             initialLocation={emergencyData?.location}
             onLocationSelected={handleLocationSelected}
-            onLocationConfirmed={handleLocationConfirmed}
+            onLocationConfirmed={handleLocationConfirmedInternal}
             placeholder={emergencyData?.location ? 
               "Confirm or refine the location..." : 
               "Enter emergency location..."
@@ -90,6 +94,7 @@ IncidentLocationSection.propTypes = {
     urgency: PropTypes.string,
     location: PropTypes.string,
   }),
+  onLocationConfirmed: PropTypes.func,
 }
 
 export default IncidentLocationSection

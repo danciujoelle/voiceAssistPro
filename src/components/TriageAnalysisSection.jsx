@@ -35,7 +35,7 @@ const renderUnitsWithIcons = (unitsString) => {
   );
 };
 
-const TriageAnalysisSection = ({ emergencyData }) => {
+const TriageAnalysisSection = ({ emergencyData, onDispatchUnits }) => {
   const handleDispatchUnits = () => {
     if (!emergencyData || !emergencyData.units) {
       alert("No units available to dispatch");
@@ -51,9 +51,13 @@ const TriageAnalysisSection = ({ emergencyData }) => {
     if (confirm(message + "\n\nProceed with dispatch?")) {
       // Here you would typically make an API call to dispatch the units
       alert("Units have been dispatched successfully!");
+      // Notify parent component that units have been dispatched
+      if (onDispatchUnits) {
+        onDispatchUnits(units);
+      }
     }
   };
-  if (!emergencyData || !emergencyData.type) {
+  if (!emergencyData?.type) {
     return (
       <section className="triage-section">
         <div className="section-header">
@@ -116,6 +120,7 @@ TriageAnalysisSection.propTypes = {
     urgency: PropTypes.string,
     units: PropTypes.string,
   }),
+  onDispatchUnits: PropTypes.func,
 };
 
 export default TriageAnalysisSection;

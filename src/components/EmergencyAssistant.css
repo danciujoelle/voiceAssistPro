@@ -52,6 +52,12 @@
   grid-column: 1 / -1;
   grid-row: 3;
 }
+
+/* Make the unit dispatch section span both columns */
+.assistant-main>*:nth-child(6) {
+  grid-column: 1 / -1;
+  grid-row: 4;
+}
 /* Responsive Design */
 @media (max-width: 1024px) {
   .assistant-main {
