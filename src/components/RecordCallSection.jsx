@@ -1,46 +1,49 @@
-import { useState } from 'react'
-import AudioRecorder from './AudioRecorder'
-import OpenAI from 'openai'
-import PropTypes from 'prop-types'
-import './RecordCallSection.css'
+import { useState } from "react";
+import AudioRecorder from "./AudioRecorder";
+import OpenAI from "openai";
+import PropTypes from "prop-types";
+import "./RecordCallSection.css";
 
-const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) => {
-  const [transcript, setTranscript] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState("")
+const RecordCallSection = ({
+  onTranscriptGenerated,
+  onEmergencyDataGenerated,
+}) => {
+  const [transcript, setTranscript] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState("");
 
   const processAudioWithOpenAI = async (audioFile) => {
-    setIsProcessing(true)
-    setError("")
-    
+    setIsProcessing(true);
+    setError("");
+
     try {
       const openai = new OpenAI({
         apiKey: import.meta.env.VITE_OPENAI_API_KEY,
         dangerouslyAllowBrowser: true,
-      })
+      });
 
       // Transcribe audio
       const translation = await openai.audio.translations.create({
         file: audioFile,
         model: "whisper-1",
-      })
+      });
 
       if (translation.text) {
-        setTranscript(translation.text)
-        onTranscriptGenerated(translation.text)
-        
+        setTranscript(translation.text);
+        onTranscriptGenerated(translation.text);
+
         // Process the transcribed text through emergency triage
-        await triageCall(translation.text, openai)
+        await triageCall(translation.text, openai);
       } else {
-        setError("Error processing audio file")
+        setError("Error processing audio file");
       }
     } catch (err) {
-      console.error("Error processing audio file:", err)
-      setError("Error processing audio file: " + err.message)
+      console.error("Error processing audio file:", err);
+      setError("Error processing audio file: " + err.message);
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   const triageCall = async (transcriptText, openai) => {
     try {
@@ -49,7 +52,8 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
         messages: [
           {
             role: "system",
-            content: "You are an emergency assistance AI. Analyze the emergency call transcript and extract structured information to help dispatch appropriate response units. Provide clear, concise help for emergency situations.",
+            content:
+              "You are an emergency assistance AI. Analyze the emergency call transcript and extract structured information to help dispatch appropriate response units. Provide clear, concise help for emergency situations.",
           },
           { role: "user", content: transcriptText },
         ],
@@ -63,7 +67,15 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
               properties: {
                 emergency_type: {
                   type: "string",
-                  enum: ["Medical", "Fire", "Accident", "Crime", "Hazard", "Mental Health", "Unclear"],
+                  enum: [
+                    "Medical",
+                    "Fire",
+                    "Accident",
+                    "Crime",
+                    "Hazard",
+                    "Mental Health",
+                    "Unclear",
+                  ],
                 },
                 urgency_level: {
                   type: "string",
@@ -73,7 +85,14 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
                   type: "array",
                   items: {
                     type: "string",
-                    enum: ["Ambulance", "Police", "Firefighters", "Mental Health Team", "Hazard Unit", "Traffic Police"],
+                    enum: [
+                      "Ambulance",
+                      "Police",
+                      "Firefighters",
+                      "Mental Health Team",
+                      "Hazard Unit",
+                      "Traffic Police",
+                    ],
                   },
                 },
                 location_mention: { type: ["string", "null"] },
@@ -81,17 +100,25 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
                   type: "array",
                   items: { type: "string" },
                 },
+                guidance_steps: { type: "array", items: { type: "string" } },
               },
-              required: ["emergency_type", "urgency_level", "required_response_units", "location_mention", "followup_questions"],
+              required: [
+                "emergency_type",
+                "urgency_level",
+                "required_response_units",
+                "location_mention",
+                "followup_questions",
+                "guidance_steps",
+              ],
               additionalProperties: false,
             },
           },
         },
         temperature: 0.1,
-      })
+      });
 
-      const jsonResponse = completion.choices[0].message.content
-      const parsedResponse = JSON.parse(jsonResponse)
+      const jsonResponse = completion.choices[0].message.content;
+      const parsedResponse = JSON.parse(jsonResponse);
 
       // Transform the data to match our component structure
       const emergencyData = {
@@ -99,36 +126,37 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
         urgency: parsedResponse.urgency_level,
         units: parsedResponse.required_response_units.join(", "),
         suggestedQuestions: parsedResponse.followup_questions,
-        location: parsedResponse.location_mention
-      }
+        location: parsedResponse.location_mention,
+        guidanceSteps: parsedResponse.guidance_steps,
+      };
 
-      onEmergencyDataGenerated(emergencyData)
+      onEmergencyDataGenerated(emergencyData);
     } catch (err) {
-      console.error("Error during triage call:", err)
-      setError("Error processing transcript: " + err.message)
+      console.error("Error during triage call:", err);
+      setError("Error processing transcript: " + err.message);
     }
-  }
+  };
 
   const handleAudioRecorded = async (audioBlob, audioUrl, duration) => {
-    console.log('Audio recorded:', { audioBlob, audioUrl, duration })
-    
+    console.log("Audio recorded:", { audioBlob, audioUrl, duration });
+
     // Convert Blob to File object for OpenAI API
     const audioFile = new File([audioBlob], "audio.webm", {
       type: audioBlob.type || "audio/webm",
-    })
+    });
 
-    await processAudioWithOpenAI(audioFile)
-  }
+    await processAudioWithOpenAI(audioFile);
+  };
 
   const handleFileUpload = async (event) => {
-    const file = event.target.files[0]
-    if (file && file.type.startsWith('audio/')) {
-      console.log('Audio file uploaded:', file.name)
-      await processAudioWithOpenAI(file)
+    const file = event.target.files[0];
+    if (file && file.type.startsWith("audio/")) {
+      console.log("Audio file uploaded:", file.name);
+      await processAudioWithOpenAI(file);
     }
     // Clear the input
-    event.target.value = ""
-  }
+    event.target.value = "";
+  };
 
   return (
     <section className="record-section">
@@ -136,10 +164,10 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
         <span className="section-icon">🎤</span>
         <h2>Record Call</h2>
       </div>
-      
+
       <div className="record-buttons-container">
         <AudioRecorder onAudioRecorded={handleAudioRecorded} />
-        
+
         <div className="upload-section">
           <label htmlFor="audio-upload" className="upload-button">
             📁 Upload Audio File
@@ -149,23 +177,23 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
             type="file"
             accept="audio/*"
             onChange={handleFileUpload}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
         </div>
       </div>
-      
+
       {isProcessing && (
         <div className="processing-indicator">
           <span>🔄 Processing audio...</span>
         </div>
       )}
-      
+
       {error && (
         <div className="error-message">
           <span>❌ {error}</span>
         </div>
       )}
-      
+
       {transcript && (
         <div className="transcript-section">
           <h3>Transcript:</h3>
@@ -173,12 +201,12 @@ const RecordCallSection = ({ onTranscriptGenerated, onEmergencyDataGenerated }) 
         </div>
       )}
     </section>
-  )
-}
+  );
+};
 
 RecordCallSection.propTypes = {
   onTranscriptGenerated: PropTypes.func.isRequired,
   onEmergencyDataGenerated: PropTypes.func.isRequired,
-}
+};
 
-export default RecordCallSection
+export default RecordCallSection;
