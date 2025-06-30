@@ -1,6 +1,40 @@
 import PropTypes from "prop-types";
 import "./TriageAnalysisSection.css";
 
+// Helper function to get icons for different emergency units
+const getUnitIcon = (unitName) => {
+  const unitIcons = {
+    Ambulance: "🚑",
+    Police: "👮‍♂️",
+    Firefighters: "🚒",
+    "Mental Health Team": "🧠",
+    "Hazard Unit": "⚠️",
+    "Traffic Police": "🚔",
+  };
+
+  return unitIcons[unitName] || "🚨";
+};
+
+
+
+// Helper function to parse and display units with icons in a structured way
+const renderUnitsWithIcons = (unitsString) => {
+  if (!unitsString) return <span className="no-units">None required</span>;
+
+  const units = unitsString.split(", ").map((unit) => unit.trim());
+
+  return (
+    <div className="units-grid">
+      {units.map((unit) => (
+        <div key={unit} className="unit-card">
+          <span className="unit-icon">{getUnitIcon(unit)}</span>
+          <span className="unit-name">{unit}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const TriageAnalysisSection = ({ emergencyData }) => {
   if (!emergencyData || !emergencyData.type) {
     return (
@@ -37,8 +71,11 @@ const TriageAnalysisSection = ({ emergencyData }) => {
           <span>Urgency: {emergencyData.urgency}</span>
         </div>
         <div className="info-item units">
-          <span className="status-dot units"></span>
-          <span>Units: {emergencyData.units}</span>
+          <div className="units-header">
+            <span className="status-dot units"></span>
+            <span className="units-label">Required Units:</span>
+          </div>
+          {renderUnitsWithIcons(emergencyData.units)}
         </div>
       </div>
 

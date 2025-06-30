@@ -65,3 +65,98 @@
     margin-bottom: 0.5rem;
     line-height: 1.4;
 }
+
+/* Units display styles */
+
+
+/* Override for units info-item to allow vertical layout */
+.info-item.units {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.units-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.units-label {
+  font-weight: 600;
+  color: #343a40;
+}
+
+/* Structured units display */
+.units-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.unit-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  min-height: 36px;
+  flex: 0 0 auto;
+}
+
+.unit-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-color: #adb5bd;
+}
+
+.unit-card .unit-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.unit-card .unit-name {
+  font-weight: 600;
+  color: #343a40;
+  font-size: 0.85rem;
+}
+
+.no-units {
+  color: #6c757d;
+  font-style: italic;
+  padding: 0.5rem;
+}
+
+/* Responsive adjustments for units */
+@media (max-width: 768px) {
+  .units-grid {
+    gap: 0.4rem;
+  }
+
+  .unit-card {
+    justify-content: flex-start;
+    padding: 0.4rem 0.6rem;
+    min-height: 32px;
+    flex: 1 1 calc(50% - 0.2rem);
+  }
+
+  .unit-card .unit-icon {
+    font-size: 1rem;
+  }
+
+  .unit-card .unit-name {
+    font-size: 0.8rem;
+  }
+}
+
