@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import PropTypes from "prop-types";
 import "./MapView.css";
 
@@ -77,33 +76,65 @@ MapComponent.propTypes = {
   markers: PropTypes.array.isRequired,
 };
 
-const MapView = ({ location, emergencyType, urgencyLevel }) => {
-  const [coordinates, setCoordinates] = useState(null);
+const MapView = ({ location, coordinates, emergencyType, urgencyLevel }) => {
+  const [mapCoordinates, setMapCoordinates] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isGoogleMapsReady, setIsGoogleMapsReady] = useState(false);
+
+  // Check if Google Maps is loaded and update state when it is
+  useEffect(() => {
+    const checkGoogleMaps = () => {
+      if (window.google && window.google.maps) {
+        setIsGoogleMapsReady(true);
+      } else {
+        // Keep checking until Google Maps is loaded
+        setTimeout(checkGoogleMaps, 100);
+      }
+    };
+
+    checkGoogleMaps();
+  }, []);
 
   useEffect(() => {
+    const setupCoordinates = async () => {
+      // Wait for Google Maps to be loaded before geocoding
+      if (!isGoogleMapsReady) {
+        return;
+      }
+
+      // If we have precise coordinates from autocomplete, use them
+      if (coordinates) {
+        setMapCoordinates(coordinates);
+        setLoading(false);
+        return;
+      }
+
+      // Otherwise proceed with geocoding
+      await geocodeLocation();
+    };
+
     const geocodeLocation = async () => {
       if (!location) {
         // If no location provided, try to get user's current location
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              setCoordinates({
+              setMapCoordinates({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               });
               setLoading(false);
             },
-            (geoError) => {
-              console.error("Geolocation error:", geoError);
+            () => {
+              console.error("Geolocation error");
               // Default to Cluj-Napoca, Romania if geolocation fails
-              setCoordinates({ lat: 46.7712, lng: 23.6236 });
+              setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
               setLoading(false);
             }
           );
         } else {
-          setCoordinates({ lat: 46.7712, lng: 23.6236 });
+          setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
           setLoading(false);
         }
         return;
@@ -119,42 +150,49 @@ const MapView = ({ location, emergencyType, urgencyLevel }) => {
 
         if (data.results && data.results.length > 0) {
           const { lat, lng } = data.results[0].geometry.location;
-          setCoordinates({ lat, lng });
+          setMapCoordinates({ lat, lng });
         } else {
           setError("Location not found");
-          // Fallback to user's current location
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                setCoordinates({
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                });
-              },
-              () => {
-                setCoordinates({ lat: 46.7712, lng: 23.6236 }); // Cluj-Napoca, Romania
-              }
-            );
-          }
+          handleGeolocationFallback();
         }
       } catch (err) {
         console.error("Geocoding error:", err);
         setError("Failed to geocode location");
-        setCoordinates({ lat: 46.7712, lng: 23.6236 }); // Cluj-Napoca, Romania
+        setMapCoordinates({ lat: 46.7712, lng: 23.6236 }); // Cluj-Napoca, Romania
       } finally {
         setLoading(false);
       }
     };
 
-    geocodeLocation();
-  }, [location]);
+    const handleGeolocationFallback = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setMapCoordinates({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+          },
+          () => {
+            setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
+          }
+        );
+      } else {
+        setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
+      }
+    };
+
+    setupCoordinates();
+  }, [location, coordinates, isGoogleMapsReady]);
 
   const getEmergencyIcon = (type, urgency) => {
     const baseUrl = "https://maps.google.com/mapfiles/ms/icons/";
-    
+
     switch (type?.toLowerCase()) {
       case "medical":
-        return urgency === "Critical" ? `${baseUrl}red-dot.png` : `${baseUrl}pink-dot.png`;
+        return urgency === "Critical"
+          ? `${baseUrl}red-dot.png`
+          : `${baseUrl}pink-dot.png`;
       case "fire":
         return `${baseUrl}orange-dot.png`;
       case "crime":
@@ -170,52 +208,43 @@ const MapView = ({ location, emergencyType, urgencyLevel }) => {
     }
   };
 
-  const render = (status) => {
-    switch (status) {
-      case Status.LOADING:
-        return <div className="map-loading">Loading Google Maps...</div>;
-      case Status.FAILURE:
-        return <div className="map-error">Error loading Google Maps</div>;
-      case Status.SUCCESS: {
-        if (loading) {
-          return <div className="map-loading">Geocoding location...</div>;
-        }
-
-        if (error) {
-          return <div className="map-error">Error: {error}</div>;
-        }
-
-        if (!coordinates) {
-          return <div className="map-loading">Getting location...</div>;
-        }
-
-        const markers = [
-          {
-            position: coordinates,
-            title: `Emergency Location: ${location || "Current Location"}`,
-            icon: getEmergencyIcon(emergencyType, urgencyLevel),
-            infoContent: `
-              <div style="padding: 10px;">
-                <h3 style="margin: 0 0 5px 0; color: #d32f2f;">Emergency Alert</h3>
-                <p style="margin: 5px 0;"><strong>Type:</strong> ${emergencyType}</p>
-                <p style="margin: 5px 0;"><strong>Urgency:</strong> ${urgencyLevel}</p>
-                <p style="margin: 5px 0;"><strong>Location:</strong> ${location || "Current Location"}</p>
-              </div>
-            `,
-          },
-        ];
-
-        return (
-          <MapComponent
-            center={coordinates}
-            zoom={15}
-            markers={markers}
-          />
-        );
-      }
-      default:
-        return <div className="map-error">Unknown status</div>;
+  const render = () => {
+    // Check if Google Maps is loaded
+    if (!isGoogleMapsReady || !window.google || !window.google.maps) {
+      return <div className="map-loading">Loading Google Maps...</div>;
     }
+
+    if (loading) {
+      return <div className="map-loading">Geocoding location...</div>;
+    }
+
+    if (error) {
+      return <div className="map-error">Error: {error}</div>;
+    }
+
+    if (!mapCoordinates) {
+      return <div className="map-loading">Getting location...</div>;
+    }
+
+    const markers = [
+      {
+        position: mapCoordinates,
+        title: `Emergency Location: ${location || "Current Location"}`,
+        icon: getEmergencyIcon(emergencyType, urgencyLevel),
+        infoContent: `
+          <div style="padding: 10px;">
+            <h3 style="margin: 0 0 5px 0; color: #d32f2f;">Emergency Alert</h3>
+            <p style="margin: 5px 0;"><strong>Type:</strong> ${emergencyType}</p>
+            <p style="margin: 5px 0;"><strong>Urgency:</strong> ${urgencyLevel}</p>
+            <p style="margin: 5px 0;"><strong>Location:</strong> ${
+              location || "Current Location"
+            }</p>
+          </div>
+        `,
+      },
+    ];
+
+    return <MapComponent center={mapCoordinates} zoom={15} markers={markers} />;
   };
 
   return (
@@ -224,17 +253,17 @@ const MapView = ({ location, emergencyType, urgencyLevel }) => {
         <h3>Emergency Location Map</h3>
         {location && <p className="location-text">Showing: {location}</p>}
       </div>
-      <Wrapper
-        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        render={render}
-        libraries={["geometry"]}
-      />
+      {render()}
     </div>
   );
 };
 
 MapView.propTypes = {
   location: PropTypes.string,
+  coordinates: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
+  }),
   emergencyType: PropTypes.string,
   urgencyLevel: PropTypes.string,
 };

@@ -53,7 +53,7 @@ const RecordCallSection = ({
           {
             role: "system",
             content:
-              "You are an emergency assistance AI. Analyze the emergency call transcript and extract structured information to help dispatch appropriate response units. Provide clear, concise help for emergency situations.",
+              "You are an emergency assistance AI. Analyze the emergency call transcript and extract structured information to help dispatch appropriate response units. Pay special attention to location mentions - extract the most specific address, intersection, landmark, or place name mentioned. If multiple locations are mentioned, prioritize the emergency incident location. Provide clear, concise help for emergency situations.",
           },
           { role: "user", content: transcriptText },
         ],
@@ -95,7 +95,10 @@ const RecordCallSection = ({
                     ],
                   },
                 },
-                location_mention: { type: ["string", "null"] },
+                location_mention: { 
+                  type: ["string", "null"],
+                  description: "The most specific location mentioned - address, intersection, landmark, or place name where the emergency is occurring"
+                },
                 followup_questions: {
                   type: "array",
                   items: { type: "string" },
