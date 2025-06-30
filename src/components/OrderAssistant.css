@@ -1,10 +1,40 @@
 /* Order Assistant Styles */
 .order-assistant {
-  height: 100%;
+  height: 90vh;
   display: flex;
   flex-direction: column;
 }
 
+.order-assistant .assistant-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: none;
+  /* Remove max-width constraint */
+  margin: 0 auto;
+  width: 100%;
+  align-items: stretch;
+  /* Make sections stretch to full height */
+  min-width: 900px;
+  /* Ensure minimum width to accommodate 3 sections */
+  overflow-x: auto;
+  /* Allow horizontal scroll if content is too wide */
+  flex: 1;
+  /* Take up remaining space */
+}
+
+/* Override global section styles for full viewport height in Order Copilot */
+.order-assistant .record-section,
+.order-assistant .triage-section,
+.order-assistant .location-section {
+  height: 100% !important;
+  min-height: unset !important;
+  max-height: unset !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
 .order-summary {
   flex: 1;
   margin-top: 1rem;
@@ -75,18 +105,113 @@
   font-size: 0.95rem;
 }
 
-/* Responsive Design */
+/* Location section specific styles */
+.location-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.address-info {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.address-info p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.address-info .help-text {
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.map-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  min-height: 300px;
+}
+
+.map-placeholder p {
+  margin: 0 0 0.5rem 0;
+  color: #6c757d;
+}
+
+.map-placeholder .map-text {
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  max-width: 300px;
+}
+
+.update-location-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.update-location-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design - Keep sections horizontal */
 @media (max-width: 1024px) {
   .order-assistant .assistant-main {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: 1fr 1fr 1fr;
+      /* Keep 3 columns */
+      gap: 0.75rem;
     padding: 1rem;
-    overflow-y: auto;
+    overflow-x: auto;
+      /* Allow horizontal scroll if needed */
+    }
+    
+    .order-assistant .record-section,
+    .order-assistant .triage-section,
+    .order-assistant .location-section {
+      min-width: 280px;
+      /* Ensure minimum width for readability */
   }
 }
 
 @media (max-width: 768px) {
   .order-assistant .assistant-main {
-    padding: 0.75rem;
+    grid-template-columns: 1fr 1fr 1fr;
+      /* Keep 3 columns even on mobile */
+      gap: 0.5rem;
+      padding: 0.5rem;
+      overflow-x: auto;
+    }
+    
+    .order-assistant .record-section,
+    .order-assistant .triage-section,
+    .order-assistant .location-section {
+      min-width: 240px;
+      /* Smaller minimum width for mobile */
+      font-size: 0.875rem;
+      /* Slightly smaller text for mobile */
   }
 }

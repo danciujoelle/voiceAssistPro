@@ -50,21 +50,23 @@ const OrderRecordSection = ({ onTranscriptGenerated, onOrderDataGenerated }) => 
   )
 }
 
-const OrderAnalysisSection = ({ orderData }) => {
+const OrderSummarySection = ({ orderData }) => {
   if (!orderData || !orderData.type) {
     return (
       <section className="triage-section">
         <div className="section-header">
           <span className="section-icon">📊</span>
-          <h2>Order Analysis</h2>
+          <h2>Order Summary</h2>
         </div>
-        
+
         <div className="no-data-message">
           <p>📋 Waiting for order analysis...</p>
-          <p className="help-text">Record or upload an audio file to see the order details.</p>
+          <p className="help-text">
+            Record or upload an audio file to see the order details.
+          </p>
         </div>
       </section>
-    )
+    );
   }
 
   return (
@@ -73,7 +75,7 @@ const OrderAnalysisSection = ({ orderData }) => {
         <span className="section-icon">📊</span>
         <h2>Order Analysis</h2>
       </div>
-      
+
       <div className="emergency-info">
         <div className="info-item emergency">
           <span className="status-dot order-type"></span>
@@ -93,65 +95,65 @@ const OrderAnalysisSection = ({ orderData }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-const OrderLocationSection = ({ orderData }) => {
+const OrderLocationSection = () => {
   return (
     <section className="location-section">
       <div className="section-header">
         <span className="section-icon">📍</span>
         <h2>Delivery Location</h2>
       </div>
-      
-      <div className="no-location-message">
-        <p>🏠 Default delivery address will be used.</p>
-        <p className="help-text">Update your delivery preferences in settings.</p>
-      </div>
-      
-      <div className="order-summary">
-        <h3>📦 Order Summary</h3>
-        {orderData ? (
-          <div className="summary-content">
-            <p><strong>Order Type:</strong> {orderData.type}</p>
-            <p><strong>Items:</strong> {orderData.items}</p>
-            <p><strong>Estimated Time:</strong> {orderData.estimatedTime}</p>
-            <p><strong>Total:</strong> {orderData.total}</p>
-            <button className="confirm-order-btn">✅ Confirm Order</button>
+
+      <div className="location-content">
+        <div className="address-info">
+          <p>🏠 Default delivery address will be used.</p>
+          <p className="help-text">
+            Update your delivery preferences in settings.
+          </p>
+        </div>
+
+        <div className="map-container">
+          <div className="map-placeholder">
+            <p>🗺️ Map View</p>
+            <p className="map-text">
+              Interactive map will be displayed here showing the delivery
+              location and route.
+            </p>
+            <button className="update-location-btn">📍 Update Location</button>
           </div>
-        ) : (
-          <p className="help-text">No order details available yet.</p>
-        )}
+        </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 const OrderAssistant = () => {
-  const [orderData, setOrderData] = useState(null)
+  const [orderData, setOrderData] = useState(null);
 
   const handleTranscriptGenerated = (newTranscript) => {
-    console.log('Order transcript generated:', newTranscript)
-  }
+    console.log("Order transcript generated:", newTranscript);
+  };
 
   const handleOrderDataGenerated = (data) => {
-    setOrderData(data)
-  }
+    setOrderData(data);
+  };
 
   return (
     <div className="order-assistant">
       <main className="assistant-main">
-        <OrderRecordSection 
+        <OrderRecordSection
           onTranscriptGenerated={handleTranscriptGenerated}
           onOrderDataGenerated={handleOrderDataGenerated}
         />
-        
-        <OrderAnalysisSection orderData={orderData} />
-        
-        <OrderLocationSection orderData={orderData} />
+
+        <OrderSummarySection orderData={orderData} />
+
+        <OrderLocationSection />
       </main>
     </div>
-  )
-}
+  );
+};
 
 export default OrderAssistant
