@@ -1,9 +1,10 @@
 /* Emergency Assistant Styles */
 .emergency-assistant {
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100%;
+  padding-bottom: 2rem;
 }
 
 .dispatcher-logo {
@@ -15,13 +16,12 @@
 
 .assistant-main {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
   padding: 1.5rem;
   max-width: 1400px;
   margin: 0 auto;
-  flex: 1;
-  overflow: hidden;
+  width: 100%;
 }
 
 /* Responsive Design */
@@ -30,7 +30,6 @@
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
-    overflow-y: auto;
   }
 }
 

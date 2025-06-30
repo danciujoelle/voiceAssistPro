@@ -31,41 +31,6 @@
   flex-shrink: 0;
 }
 
-.questions-and-guidance {
-  flex: 1;
-  overflow-y: auto;
-  max-height: 400px;
-    padding-right: 8px;
-  }
-  
-  .suggested-questions {
-    margin-bottom: 1.5rem;
-  }
-  
-  .guidance-steps {
-    margin-bottom: 0;
-  }
-  
-  .suggested-questions h3,
-  .guidance-steps h3 {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  .suggested-questions ul,
-  .guidance-steps ul {
-    margin: 0;
-    padding-left: 1.25rem;
-  }
-  
-  .suggested-questions li,
-  .guidance-steps li {
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
-}
-
 /* Units display styles */
 
 
