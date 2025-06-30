@@ -2,22 +2,44 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import "./MapView.css";
 
+// Default location: Cluj-Napoca, Romania (city center)
+const DEFAULT_LOCATION = {
+  lat: 46.7712,
+  lng: 23.6236,
+  address: "Cluj-Napoca, Romania"
+};
+
 const MapComponent = ({ center, zoom, markers }) => {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const googleMarkersRef = useRef([]);
 
   useEffect(() => {
-    if (mapRef.current && !map) {
-      const newMap = new window.google.maps.Map(mapRef.current, {
-        center,
-        zoom,
-        mapTypeControl: true,
-        streetViewControl: true,
-        fullscreenControl: true,
-        zoomControl: true,
+    if (mapRef.current && !map && window.google && window.google.maps) {
+      console.log("MapComponent: Creating Google Map with center:", center);
+      // Add a small delay to ensure everything is ready
+      setTimeout(() => {
+        try {
+          const newMap = new window.google.maps.Map(mapRef.current, {
+            center,
+            zoom,
+            mapTypeControl: true,
+            streetViewControl: true,
+            fullscreenControl: true,
+            zoomControl: true,
+          });
+          console.log("MapComponent: Google Map created successfully");
+          setMap(newMap);
+        } catch (error) {
+          console.error("MapComponent: Error creating Google Map:", error);
+        }
+      }, 100);
+    } else {
+      console.log("MapComponent: Not ready to create map:", {
+        hasMapRef: !!mapRef.current,
+        hasMap: !!map,
+        hasGoogle: !!(window.google && window.google.maps)
       });
-      setMap(newMap);
     }
   }, [center, zoom, map]);
 
@@ -60,11 +82,8 @@ const MapComponent = ({ center, zoom, markers }) => {
 
       googleMarkersRef.current = newMarkers;
 
-      // Center map on the first marker and set appropriate zoom
-      if (newMarkers.length === 1) {
-        map.panTo(markers[0].position); // Use panTo for smooth animation
-        map.setZoom(zoom);
-      } else if (newMarkers.length > 1) {
+      // If multiple markers, adjust bounds to show all markers
+      if (markers.length > 1) {
         // Adjust map bounds to show all markers
         const bounds = new window.google.maps.LatLngBounds();
         markers.forEach((marker) => bounds.extend(marker.position));
@@ -84,7 +103,7 @@ const MapComponent = ({ center, zoom, markers }) => {
     };
   }, []);
 
-  return <div ref={mapRef} className="map-container" />;
+  return <div ref={mapRef} className="map-container" style={{ height: '400px', width: '100%', backgroundColor: '#f0f0f0' }} />;
 };
 
 MapComponent.propTypes = {
@@ -93,13 +112,7 @@ MapComponent.propTypes = {
   markers: PropTypes.array.isRequired,
 };
 
-const MapView = ({
-  location,
-  coordinates,
-  emergencyType,
-  urgencyLevel,
-  hideHeader = false,
-}) => {
+const DeliveryMapView = ({ location, coordinates, orderType, priority, customerName }) => {
   const [mapCoordinates, setMapCoordinates] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -143,27 +156,10 @@ const MapView = ({
 
     const geocodeLocation = async () => {
       if (!location) {
-        // If no location provided, try to get user's current location
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              setMapCoordinates({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              });
-              setLoading(false);
-            },
-            () => {
-              console.error("Geolocation error");
-              // Default to Cluj-Napoca, Romania if geolocation fails
-              setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
-              setLoading(false);
-            }
-          );
-        } else {
-          setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
-          setLoading(false);
-        }
+        // If no location provided, immediately use default location
+        console.log("No location provided - using default Cluj-Napoca location");
+        setMapCoordinates(DEFAULT_LOCATION);
+        setLoading(false);
         return;
       }
 
@@ -185,7 +181,7 @@ const MapView = ({
       } catch (err) {
         console.error("Geocoding error:", err);
         setError("Failed to geocode location");
-        setMapCoordinates({ lat: 46.7712, lng: 23.6236 }); // Cluj-Napoca, Romania
+        setMapCoordinates(DEFAULT_LOCATION); // Cluj-Napoca, Romania
       } finally {
         setLoading(false);
       }
@@ -201,71 +197,81 @@ const MapView = ({
             });
           },
           () => {
-            setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
+            setMapCoordinates(DEFAULT_LOCATION);
           }
         );
       } else {
-        setMapCoordinates({ lat: 46.7712, lng: 23.6236 });
+        setMapCoordinates(DEFAULT_LOCATION);
       }
     };
 
     setupCoordinates();
   }, [location, coordinates, isGoogleMapsReady]);
 
-  const getEmergencyIcon = (type, urgency) => {
+  const getDeliveryIcon = (orderType, priority) => {
     const baseUrl = "https://maps.google.com/mapfiles/ms/icons/";
 
-    switch (type?.toLowerCase()) {
-      case "medical":
-        return urgency === "Critical"
-          ? `${baseUrl}red-dot.png`
-          : `${baseUrl}pink-dot.png`;
-      case "fire":
-        return `${baseUrl}orange-dot.png`;
-      case "crime":
-        return `${baseUrl}purple-dot.png`;
-      case "accident":
-        return `${baseUrl}yellow-dot.png`;
-      case "hazard":
-        return `${baseUrl}brown-dot.png`;
-      case "mental health":
+    // Use different icons based on order type and priority
+    switch (orderType?.toLowerCase()) {
+      case "construction":
+        return priority === "urgent" || priority === "high"
+          ? `${baseUrl}orange-dot.png`
+          : `${baseUrl}yellow-dot.png`;
+      case "office":
         return `${baseUrl}blue-dot.png`;
+      case "residential":
+        return `${baseUrl}green-dot.png`;
+      case "commercial":
+        return `${baseUrl}purple-dot.png`;
+      case "industrial":
+        return `${baseUrl}brown-dot.png`;
       default:
-        return `${baseUrl}red-dot.png`;
+        // Default delivery icon based on priority
+        return priority === "urgent" || priority === "high"
+          ? `${baseUrl}red-dot.png`
+          : `${baseUrl}green-dot.png`;
     }
   };
 
   const render = () => {
     // Check if Google Maps is loaded
     if (!isGoogleMapsReady || !window.google || !window.google.maps) {
+      console.log("DeliveryMapView: Google Maps not ready");
       return <div className="map-loading">Loading Google Maps...</div>;
     }
 
     if (loading) {
+      console.log("DeliveryMapView: Loading location...");
       return <div className="map-loading">Geocoding location...</div>;
     }
 
     if (error) {
+      console.error("DeliveryMapView: Error:", error);
       return <div className="map-error">Error: {error}</div>;
     }
 
     if (!mapCoordinates) {
+      console.log("DeliveryMapView: No coordinates available");
       return <div className="map-loading">Getting location...</div>;
     }
+
+    console.log("DeliveryMapView: Rendering map with coordinates:", mapCoordinates);
 
     const markers = [
       {
         position: mapCoordinates,
-        title: `Emergency Location: ${location || "Current Location"}`,
-        icon: getEmergencyIcon(emergencyType, urgencyLevel),
+        title: `Delivery Location: ${location || DEFAULT_LOCATION.address}`,
+        icon: getDeliveryIcon(orderType, priority),
         infoContent: `
           <div style="padding: 10px;">
-            <h3 style="margin: 0 0 5px 0; color: #d32f2f;">Emergency Alert</h3>
-            <p style="margin: 5px 0;"><strong>Type:</strong> ${emergencyType}</p>
-            <p style="margin: 5px 0;"><strong>Urgency:</strong> ${urgencyLevel}</p>
+            <h3 style="margin: 0 0 5px 0; color: #28a745;">📦 Delivery Details</h3>
+            <p style="margin: 5px 0;"><strong>Order Type:</strong> ${orderType || "Standard delivery"}</p>
+            <p style="margin: 5px 0;"><strong>Priority:</strong> ${priority || "Standard"}</p>
+            ${customerName ? `<p style="margin: 5px 0;"><strong>Customer:</strong> ${customerName}</p>` : ""}
             <p style="margin: 5px 0;"><strong>Location:</strong> ${
-              location || "Current Location"
+              location || DEFAULT_LOCATION.address
             }</p>
+            ${!location ? `<p style="margin: 5px 0; color: #6c757d; font-style: italic;">📍 Default location shown</p>` : ""}
           </div>
         `,
       },
@@ -274,28 +280,40 @@ const MapView = ({
     return <MapComponent center={mapCoordinates} zoom={15} markers={markers} />;
   };
 
+  // Debug coordinates changes
+  useEffect(() => {
+    console.log("DeliveryMapView: Coordinates changed:", mapCoordinates);
+    console.log("DeliveryMapView: Loading state:", loading);
+    console.log("DeliveryMapView: Error state:", error);
+    console.log("DeliveryMapView: Google Maps ready:", isGoogleMapsReady);
+  }, [mapCoordinates, loading, error, isGoogleMapsReady]);
+
   return (
-    <div className="map-view">
-      {!hideHeader && (
-        <div className="map-header">
-          <h3>Emergency Location Map</h3>
-          {location && <p className="location-text">Showing: {location}</p>}
-        </div>
-      )}
-      {render()}
+    <div className="map-view" style={{ height: '500px', display: 'flex', flexDirection: 'column' }}>
+      <div className="map-header">
+        <h3>📍 Delivery Location Map</h3>
+        {location ? (
+          <p className="location-text">Delivery to: {location}</p>
+        ) : (
+          <p className="location-text">📍 Default location: {DEFAULT_LOCATION.address}</p>
+        )}
+      </div>
+      <div style={{ flex: 1, minHeight: '400px' }}>
+        {render()}
+      </div>
     </div>
   );
 };
 
-MapView.propTypes = {
+DeliveryMapView.propTypes = {
   location: PropTypes.string,
   coordinates: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
   }),
-  emergencyType: PropTypes.string,
-  urgencyLevel: PropTypes.string,
-  hideHeader: PropTypes.bool,
+  orderType: PropTypes.string,
+  priority: PropTypes.string,
+  customerName: PropTypes.string,
 };
 
-export default MapView;
+export default DeliveryMapView;
