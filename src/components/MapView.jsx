@@ -6,7 +6,7 @@ import "./MapView.css";
 const MapComponent = ({ center, zoom, markers }) => {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
-  const [googleMarkers, setGoogleMarkers] = useState([]);
+  const googleMarkersRef = useRef([]);
 
   useEffect(() => {
     if (mapRef.current && !map) {
@@ -25,10 +25,10 @@ const MapComponent = ({ center, zoom, markers }) => {
   useEffect(() => {
     if (map && markers.length > 0) {
       // Clear existing markers
-      googleMarkers.forEach(marker => marker.setMap(null));
-      
+      googleMarkersRef.current.forEach((marker) => marker.setMap(null));
+
       // Add new markers
-      const newMarkers = markers.map(markerData => {
+      const newMarkers = markers.map((markerData) => {
         const marker = new window.google.maps.Marker({
           position: markerData.position,
           map: map,
@@ -50,16 +50,23 @@ const MapComponent = ({ center, zoom, markers }) => {
         return marker;
       });
 
-      setGoogleMarkers(newMarkers);
+      googleMarkersRef.current = newMarkers;
 
       // Adjust map bounds to show all markers
       if (newMarkers.length > 1) {
         const bounds = new window.google.maps.LatLngBounds();
-        markers.forEach(marker => bounds.extend(marker.position));
+        markers.forEach((marker) => bounds.extend(marker.position));
         map.fitBounds(bounds);
       }
     }
-  }, [map, markers, googleMarkers]);
+  }, [map, markers]);
+
+  // Cleanup markers on unmount
+  useEffect(() => {
+    return () => {
+      googleMarkersRef.current.forEach((marker) => marker.setMap(null));
+    };
+  }, []);
 
   return <div ref={mapRef} className="map-container" />;
 };
