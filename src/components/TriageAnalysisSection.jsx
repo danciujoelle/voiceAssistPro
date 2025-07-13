@@ -15,8 +15,6 @@ const getUnitIcon = (unitName) => {
   return unitIcons[unitName] || "🚨";
 };
 
-
-
 // Helper function to parse and display units with icons in a structured way
 const renderUnitsWithIcons = (unitsString) => {
   if (!unitsString) return <span className="no-units">None required</span>;
@@ -43,18 +41,8 @@ const TriageAnalysisSection = ({ emergencyData, onDispatchUnits }) => {
     }
 
     const units = emergencyData.units.split(", ").map((unit) => unit.trim());
-    const unitsList = units
-      .map((unit) => `• ${getUnitIcon(unit)} ${unit}`)
-      .join("\n");
-    const message = `Dispatching the following units:\n${unitsList}`;
-
-    if (confirm(message + "\n\nProceed with dispatch?")) {
-      // Here you would typically make an API call to dispatch the units
-      alert("Units have been dispatched successfully!");
-      // Notify parent component that units have been dispatched
-      if (onDispatchUnits) {
-        onDispatchUnits(units);
-      }
+    if (onDispatchUnits) {
+      onDispatchUnits(units);
     }
   };
   if (!emergencyData?.type) {
