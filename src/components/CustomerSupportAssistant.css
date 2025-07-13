@@ -1,0 +1,73 @@
+.customer-support-assistant {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.assistant-header {
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.assistant-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.assistant-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+.assistant-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+/* Responsive layout for larger screens */
+@media (min-width: 1024px) {
+  .assistant-main {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 1.5rem;
+  }
+  
+  .record-call-section {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .assistant-header {
+    background: linear-gradient(135deg, #4c5270 0%, #5a4b73 100%);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .assistant-header {
+    background: #000;
+    border: 2px solid #fff;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .customer-support-assistant * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

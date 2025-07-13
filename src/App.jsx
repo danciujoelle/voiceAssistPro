@@ -1,6 +1,7 @@
 import { TabsComponent, TabPanel } from './components/TabsComponent'
 import EmergencyAssistant from './components/EmergencyAssistant'
 import OrderAssistant from './components/OrderAssistant'
+import CustomerSupportAssistant from "./components/CustomerSupportAssistant";
 import './App.css'
 
 function App() {
@@ -12,6 +13,9 @@ function App() {
         </TabPanel>
         <TabPanel label="Order Copilot" icon="🛒">
           <OrderAssistant />
+        </TabPanel>
+        <TabPanel label="Customer Support" icon="🎧">
+          <CustomerSupportAssistant />
         </TabPanel>
       </TabsComponent>
     </div>

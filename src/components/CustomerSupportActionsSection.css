@@ -1,0 +1,269 @@
+.customer-support-actions-section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.customer-support-actions-section h3 {
+  margin: 0 0 1.5rem 0;
+  color: #1f2937;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.action-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.action-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.action-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.action-info {
+  flex: 1;
+}
+
+.action-title {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.action-description {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.action-status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.action-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.action-status.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.action-steps {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.action-steps h5 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.steps-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style: none;
+  counter-reset: step-counter;
+}
+
+.step-item {
+  margin-bottom: 0.75rem;
+  padding-left: 2rem;
+  position: relative;
+  color: #4b5563;
+  line-height: 1.5;
+  counter-increment: step-counter;
+}
+
+.step-item::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #e5e7eb;
+  color: #6b7280;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.step-item.completed {
+  color: #059669;
+}
+
+.step-item.completed::before {
+  background: #d1fae5;
+  color: #065f46;
+  content: "✓";
+}
+
+.customer-context {
+  padding: 1.5rem;
+}
+
+.customer-context h5 {
+  margin: 0 0 1rem 0;
+  color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.context-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .context-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .action-status {
+    align-self: flex-start;
+  }
+}
+
+.context-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.context-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.context-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.context-value.sentiment-positive {
+  color: #059669;
+}
+
+.context-value.sentiment-negative {
+  color: #dc2626;
+}
+
+.context-value.sentiment-neutral {
+  color: #6b7280;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .customer-support-actions-section {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .customer-support-actions-section h3 {
+    color: #f9fafb;
+  }
+  
+  .action-card {
+    border-color: #374151;
+  }
+  
+  .action-header {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  .action-title {
+    color: #f9fafb;
+  }
+  
+  .action-description {
+    color: #d1d5db;
+  }
+  
+  .action-steps {
+    border-color: #4b5563;
+  }
+  
+  .action-steps h5,
+  .customer-context h5 {
+    color: #f3f4f6;
+  }
+  
+  .step-item {
+    color: #d1d5db;
+  }
+  
+  .step-item::before {
+    background: #4b5563;
+    color: #d1d5db;
+  }
+  
+  .context-label {
+    color: #9ca3af;
+  }
+  
+  .context-value {
+    color: #f9fafb;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .action-card {
+    border: 2px solid #000;
+  }
+  
+  .action-status.pending {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+  }
+  
+  .action-status.completed {
+    background: #000;
+    color: #fff;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .customer-support-actions-section * {
+    transition: none !important;
+  }
+}

@@ -7,6 +7,7 @@ import "./RecordCallSection.css";
 const RecordCallSection = ({
   onTranscriptGenerated,
   onEmergencyDataGenerated,
+  mode = "emergency", // "emergency" or "customer-support"
 }) => {
   const [transcript, setTranscript] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -32,8 +33,12 @@ const RecordCallSection = ({
         setTranscript(translation.text);
         onTranscriptGenerated(translation.text);
 
-        // Process the transcribed text through emergency triage
-        await triageCall(translation.text, openai);
+        // Process the transcribed text through appropriate triage
+        if (mode === "customer-support") {
+          await triageCustomerSupportCall(translation.text, openai);
+        } else {
+          await triageCall(translation.text, openai);
+        }
       } else {
         setError("Error processing audio file");
       }
@@ -140,6 +145,90 @@ const RecordCallSection = ({
     }
   };
 
+  const triageCustomerSupportCall = async (transcriptText, openai) => {
+    try {
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a customer support assistant AI. From the transcript, extract: intent (user's request category), sentiment (Positive, Neutral, or Negative), recommended_action (what the agent should do next), and followup_questions (2 concise questions to clarify). Return only valid JSON in the exact schema.",
+          },
+          { role: "user", content: transcriptText },
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "CustomerSupportResponse",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                intent: {
+                  type: "string",
+                  enum: [
+                    "Product Inquiry",
+                    "Technical Support",
+                    "Billing Issue",
+                    "Complaint",
+                    "Refund Request",
+                    "Account Management",
+                    "General Information",
+                    "Feature Request",
+                    "Bug Report",
+                    "Other"
+                  ],
+                },
+                sentiment: {
+                  type: "string",
+                  enum: ["Positive", "Neutral", "Negative"],
+                },
+                recommended_action: {
+                  type: "string",
+                  enum: [
+                    "Escalate to Supervisor",
+                    "Technical Troubleshooting",
+                    "Process Refund",
+                    "Transfer to Billing",
+                    "Provide Information",
+                    "Schedule Follow-up",
+                    "Create Ticket",
+                    "Apologize and Resolve",
+                    "Offer Compensation",
+                    "Document Feedback"
+                  ],
+                },
+                followup_questions: {
+                  type: "array",
+                  items: { type: "string" },
+                  maxItems: 2,
+                  description: "2 concise questions to clarify the customer's needs"
+                },
+              },
+              required: [
+                "intent",
+                "sentiment", 
+                "recommended_action",
+                "followup_questions",
+              ],
+              additionalProperties: false,
+            },
+          },
+        },
+        temperature: 0.1,
+      });
+
+      const jsonResponse = completion.choices[0].message.content;
+      const parsedResponse = JSON.parse(jsonResponse);
+
+      onEmergencyDataGenerated(parsedResponse);
+    } catch (err) {
+      console.error("Error during customer support triage:", err);
+      setError("Error processing transcript: " + err.message);
+    }
+  };
+
   const handleAudioRecorded = async (audioBlob, audioUrl, duration) => {
     console.log("Audio recorded:", { audioBlob, audioUrl, duration });
 
@@ -153,7 +242,7 @@ const RecordCallSection = ({
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
-    if (file && file.type.startsWith("audio/")) {
+    if (file?.type?.startsWith("audio/")) {
       console.log("Audio file uploaded:", file.name);
       await processAudioWithOpenAI(file);
     }
@@ -165,7 +254,7 @@ const RecordCallSection = ({
     <section className="record-section">
       <div className="section-header">
         <span className="section-icon">🎤</span>
-        <h2>Record Call</h2>
+        <h2>{mode === "customer-support" ? "Record Customer Call" : "Record Call"}</h2>
       </div>
 
       <div className="record-buttons-container">
@@ -210,6 +299,7 @@ const RecordCallSection = ({
 RecordCallSection.propTypes = {
   onTranscriptGenerated: PropTypes.func.isRequired,
   onEmergencyDataGenerated: PropTypes.func.isRequired,
+  mode: PropTypes.oneOf(["emergency", "customer-support"]),
 };
 
 export default RecordCallSection;

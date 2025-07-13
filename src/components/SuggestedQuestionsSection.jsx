@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import "./SuggestedQuestionsSection.css";
 
-const SuggestedQuestionsSection = ({ suggestedQuestions }) => {
+const SuggestedQuestionsSection = ({ suggestedQuestions, title = "Suggested Questions" }) => {
   if (!suggestedQuestions || suggestedQuestions.length === 0) {
     return (
       <section className="suggested-questions-section">
         <div className="section-header">
           <span className="section-icon">❓</span>
-          <h2>Suggested Questions</h2>
+          <h2>{title}</h2>
         </div>
 
         <div className="no-data-message">
@@ -24,7 +24,7 @@ const SuggestedQuestionsSection = ({ suggestedQuestions }) => {
     <section className="suggested-questions-section">
       <div className="section-header">
         <span className="section-icon">❓</span>
-        <h2>Suggested Questions</h2>
+        <h2>{title}</h2>
       </div>
 
       <div className="questions-content">
@@ -45,6 +45,7 @@ const SuggestedQuestionsSection = ({ suggestedQuestions }) => {
 
 SuggestedQuestionsSection.propTypes = {
   suggestedQuestions: PropTypes.arrayOf(PropTypes.string),
+  title: PropTypes.string,
 };
 
 export default SuggestedQuestionsSection;
