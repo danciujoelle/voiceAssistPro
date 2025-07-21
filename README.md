@@ -23,17 +23,16 @@ Emergency Assist is a React-based web application designed to provide emergency 
 - **CSS Modules** - Scoped styling with modern CSS features
 - **MediaRecorder API** - Cross-browser audio recording support
 
-## Getting Started
-
-### Prerequisites
+## Prerequisites
 
 - Node.js (v16 or higher)
 - npm or yarn package manager
 - Modern web browser with microphone support
 - OpenAI API key (for speech-to-text and AI triage)
 - Google Maps API key (for location mapping)
+- Docker (for containerized deployment)
 
-### API Keys Setup
+## API Keys Setup
 
 1. **OpenAI API Key**:
    - Visit [OpenAI Platform](https://platform.openai.com/)
@@ -46,10 +45,31 @@ Emergency Assist is a React-based web application designed to provide emergency 
    - Enable the following APIs:
      - Maps JavaScript API
      - Geocoding API
+     - Places API
    - Create credentials (API Key)
    - Restrict the key to your domain for security
 
-### Installation
+## Docker Deployment
+
+1. Set up environment variables:
+   ```bash
+   cp ./iac/.env.example .env
+   # Edit the .env file with your API keys
+   ```
+
+2. Build and run with Docker Compose:
+   ```bash
+   # Build and start the container
+   docker compose -f iac/docker-compose.yml up --build
+
+   # Stop the container
+   docker compose -f iac/docker-compose.yml down
+   ```
+
+3. Access the application:
+   - Open [http://localhost:8080](http://localhost:8080) in your browser
+
+## Local Development
 
 1. Clone the repository:
    ```bash
@@ -64,12 +84,9 @@ Emergency Assist is a React-based web application designed to provide emergency 
 
 3. Set up environment variables:
    ```bash
-   cp .env.example .env
-   ```
-   Then edit `.env` and add your API keys:
-   ```
-   VITE_OPENAI_API_KEY=your_openai_api_key_here
-   VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+   # Create a .env file in the project root
+   echo "VITE_OPENAI_API_KEY=your_openai_api_key_here" > .env
+   echo "VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here" >> .env
    ```
 
 4. Start the development server:
@@ -79,13 +96,13 @@ Emergency Assist is a React-based web application designed to provide emergency 
 
 5. Open [http://localhost:5173](http://localhost:5173) in your browser
 
-### Building for Production
+## Building for Production
 
 ```bash
 npm run build
 ```
 
-### Running Linting
+## Running Linting
 
 ```bash
 npm run lint

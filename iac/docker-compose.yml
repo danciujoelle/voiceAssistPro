@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        VITE_OPENAI_API_KEY: ${VITE_OPENAI_API_KEY}
+        VITE_GOOGLE_MAPS_API_KEY: ${VITE_GOOGLE_MAPS_API_KEY}
+    container_name: voice-assist-pro
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - voice-assist-network
+
+networks:
+  voice-assist-network:
+    driver: bridge 
