@@ -10,25 +10,34 @@ const IncidentLocationSection = ({ emergencyData, onLocationConfirmed }) => {
   const [isLocationConfirmed, setIsLocationConfirmed] = useState(false)
 
   const handleLocationSelected = (locationData) => {
-    console.log('Location selected:', locationData)
-    // Update the emergency data with precise coordinates
-    setConfirmedLocation(locationData)
-  }
+    console.log("Location selected:", locationData);
+    setConfirmedLocation(locationData);
+  };
 
   const handleLocationConfirmedInternal = (locationData) => {
-    console.log('Location confirmed:', locationData)
-    setConfirmedLocation(locationData)
-    setIsLocationConfirmed(true)
-    // Notify parent component
+    console.log("Location confirmed:", locationData);
+    setConfirmedLocation(locationData);
+    setIsLocationConfirmed(true);
     if (onLocationConfirmed) {
-      onLocationConfirmed(locationData)
+      onLocationConfirmed(locationData);
     }
+  };
+
+  const displayLocation =
+    confirmedLocation ||
+    (emergencyData?.location
+      ? {
+          address: emergencyData.location,
+        }
+      : null);
+
+  const hasLocation = Boolean(displayLocation?.address); // New: determine if we have a location to show
+
+  // If no location yet, render a hidden placeholder section to preserve grid order
+  if (!hasLocation) {
+    return <section className="location-section location-hidden" aria-hidden="true" />;
   }
 
-  // Use confirmed location or fall back to detected location
-  const displayLocation = confirmedLocation || (emergencyData?.location ? { 
-    address: emergencyData.location 
-  } : null)
 
   return (
     <GoogleMapsWrapper>
@@ -37,47 +46,32 @@ const IncidentLocationSection = ({ emergencyData, onLocationConfirmed }) => {
           <span className="section-icon">📍</span>
           <h2>Incident Location</h2>
         </div>
-        
-        {emergencyData && emergencyData.location ? (
-          <div className="location-info">
-            <p className="location-detected">
-              🎤 Location from call: <strong>{emergencyData.location}</strong>
-            </p>
-            {!isLocationConfirmed && (
-              <p className="location-help">
-                Please confirm or refine the location using the search below:
-              </p>
-            )}
-          </div>
-        ) : (
+        {emergencyData?.location ? (
+          
+        <div></div>) : (
           <div className="no-location-message">
             <p>🗺️ No specific location mentioned in the call.</p>
-            <p className="help-text">Please enter the emergency location below:</p>
+            <p className="help-text">Enter the emergency location below</p>
           </div>
         )}
-
-        {/* Location Autocomplete */}
         <div className="location-autocomplete-section">
           <LocationAutocomplete
             initialLocation={emergencyData?.location}
             onLocationSelected={handleLocationSelected}
             onLocationConfirmed={handleLocationConfirmedInternal}
-            placeholder={emergencyData?.location ? 
-              "Confirm or refine the location..." : 
-              "Enter emergency location..."
+            placeholder={
+              emergencyData?.location
+                ? "Confirm or refine the location..."
+                : "Enter emergency location..."
             }
           />
+          {isLocationConfirmed && confirmedLocation && (
+            <div className="location-confirmed">
+              <span className="status-text">Location Confirmed</span>
+            </div>
+          )}
         </div>
-
-        {/* Location Status */}
-        {isLocationConfirmed && confirmedLocation && (
-          <div className="location-confirmed">
-            <span className="status-icon">✅</span>
-            <span className="status-text">Location confirmed and dispatched</span>
-          </div>
-        )}
-        
-        <MapView 
+        <MapView
           location={displayLocation?.address}
           coordinates={confirmedLocation?.coordinates}
           emergencyType={emergencyData?.type}
@@ -85,7 +79,7 @@ const IncidentLocationSection = ({ emergencyData, onLocationConfirmed }) => {
         />
       </section>
     </GoogleMapsWrapper>
-  )
+  );
 }
 
 IncidentLocationSection.propTypes = {

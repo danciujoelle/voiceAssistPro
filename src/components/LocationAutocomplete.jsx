@@ -1,40 +1,42 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import './LocationAutocomplete.css';
+import { useState, useEffect, useRef, useCallback } from "react";
+import PropTypes from "prop-types";
+import "./LocationAutocomplete.css";
 
-const LocationAutocomplete = ({ 
-  initialLocation, 
-  onLocationSelected, 
+const LocationAutocomplete = ({
+  initialLocation,
+  onLocationSelected,
   onLocationConfirmed,
-  placeholder = "Enter or confirm emergency location..." 
+  placeholder = "Enter or confirm emergency location...",
 }) => {
-  const [inputValue, setInputValue] = useState(initialLocation || '');
+  const [inputValue, setInputValue] = useState(initialLocation || "");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [geocodeResults, setGeocodeResults] = useState([]);
   const [showGeocodeOptions, setShowGeocodeOptions] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  
+
   const inputRef = useRef(null);
   const autocompleteServiceRef = useRef(null);
   const placesServiceRef = useRef(null);
   const geocoderRef = useRef(null);
 
   // Handle geocoding for manual input or initial location
-  const handleGeocodeLocation = useCallback((address) => {
-    if (!geocoderRef.current || !address.trim()) return;
+  const handleGeocodeLocation = useCallback(
+    (address) => {
+      if (!geocoderRef.current || !address.trim()) return;
 
-    setIsLoading(true);
-    setError('');
+      setIsLoading(true);
+      setError("");
 
-    geocoderRef.current.geocode(
-      { address: address },
-      (results, status) => {
+      geocoderRef.current.geocode({ address: address }, (results, status) => {
         setIsLoading(false);
-        
-        if (status === window.google.maps.GeocoderStatus.OK && results.length > 0) {
+
+        if (
+          status === window.google.maps.GeocoderStatus.OK &&
+          results.length > 0
+        ) {
           if (results.length === 1) {
             // Single result - auto-select
             const result = results[0];
@@ -42,12 +44,12 @@ const LocationAutocomplete = ({
               address: result.formatted_address,
               coordinates: {
                 lat: result.geometry.location.lat(),
-                lng: result.geometry.location.lng()
+                lng: result.geometry.location.lng(),
               },
               types: result.types,
-              source: 'geocode_single'
+              source: "geocode_single",
             };
-            
+
             setSelectedLocation(locationData);
             onLocationSelected(locationData);
           } else {
@@ -56,21 +58,27 @@ const LocationAutocomplete = ({
             setShowGeocodeOptions(true);
           }
         } else {
-          setError('Location not found. Please try a more specific address or use the suggestions.');
+          setError(
+            "Location not found. Please try a more specific address or use the suggestions."
+          );
         }
-      }
-    );
-  }, [onLocationSelected]);
+      });
+    },
+    [onLocationSelected]
+  );
 
   // Initialize Google Places services
   useEffect(() => {
     if (window.google && window.google.maps) {
-      autocompleteServiceRef.current = new window.google.maps.places.AutocompleteService();
+      autocompleteServiceRef.current =
+        new window.google.maps.places.AutocompleteService();
       geocoderRef.current = new window.google.maps.Geocoder();
-      
+
       // Create a dummy div for PlacesService
-      const dummyDiv = document.createElement('div');
-      placesServiceRef.current = new window.google.maps.places.PlacesService(dummyDiv);
+      const dummyDiv = document.createElement("div");
+      placesServiceRef.current = new window.google.maps.places.PlacesService(
+        dummyDiv
+      );
     }
   }, []);
 
@@ -84,22 +92,25 @@ const LocationAutocomplete = ({
   // Handle autocomplete search
   const handleInputChange = (value) => {
     setInputValue(value);
-    setError('');
+    setError("");
     setShowGeocodeOptions(false);
 
     if (value.length > 2 && autocompleteServiceRef.current) {
       setIsLoading(true);
-      
+
       autocompleteServiceRef.current.getPlacePredictions(
         {
           input: value,
-          types: ['establishment', 'geocode'], // Include both places and addresses
+          types: ["establishment", "geocode"], // Include both places and addresses
           // componentRestrictions: { country: 'us' }, // Remove or adjust based on your service area
         },
         (predictions, status) => {
           setIsLoading(false);
-          
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK &&
+            predictions
+          ) {
             setSuggestions(predictions);
             setShowSuggestions(true);
           } else {
@@ -124,28 +135,28 @@ const LocationAutocomplete = ({
     placesServiceRef.current.getDetails(
       {
         placeId: place.place_id,
-        fields: ['geometry', 'formatted_address', 'name', 'types']
+        fields: ["geometry", "formatted_address", "name", "types"],
       },
       (placeDetails, status) => {
         setIsLoading(false);
-        
+
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           const locationData = {
             address: placeDetails.formatted_address,
             name: placeDetails.name,
             coordinates: {
               lat: placeDetails.geometry.location.lat(),
-              lng: placeDetails.geometry.location.lng()
+              lng: placeDetails.geometry.location.lng(),
             },
             placeId: place.place_id,
             types: placeDetails.types,
-            source: 'autocomplete'
+            source: "autocomplete",
           };
-          
+
           setSelectedLocation(locationData);
           onLocationSelected(locationData);
         } else {
-          setError('Failed to get place details');
+          setError("Failed to get place details");
         }
       }
     );
@@ -157,12 +168,12 @@ const LocationAutocomplete = ({
       address: result.formatted_address,
       coordinates: {
         lat: result.geometry.location.lat(),
-        lng: result.geometry.location.lng()
+        lng: result.geometry.location.lng(),
       },
       types: result.types,
-      source: 'geocode_multiple'
+      source: "geocode_multiple",
     };
-    
+
     setSelectedLocation(locationData);
     setInputValue(result.formatted_address);
     setShowGeocodeOptions(false);
@@ -184,7 +195,7 @@ const LocationAutocomplete = ({
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       if (showSuggestions && suggestions.length > 0) {
         handlePlaceSelect(suggestions[0]);
       } else {
@@ -205,21 +216,10 @@ const LocationAutocomplete = ({
           placeholder={placeholder}
           className="location-input"
         />
-        
-        <button 
-          onClick={handleManualSearch}
-          disabled={isLoading || !inputValue}
-          className="search-button"
-        >
-          {isLoading ? '🔄' : '🔍'}
-        </button>
-        
+
         {selectedLocation && (
-          <button 
-            onClick={handleConfirmLocation}
-            className="confirm-button"
-          >
-            ✓ Confirm
+          <button onClick={handleConfirmLocation} className="confirm-button">
+            Confirm
           </button>
         )}
       </div>
@@ -260,7 +260,7 @@ const LocationAutocomplete = ({
             >
               <span className="option-address">{result.formatted_address}</span>
               <span className="option-types">
-                {result.types.slice(0, 2).join(', ')}
+                {result.types.slice(0, 2).join(", ")}
               </span>
             </button>
           ))}
@@ -269,17 +269,15 @@ const LocationAutocomplete = ({
 
       {/* Selected Location Display */}
       {selectedLocation && (
-        <div className="selected-location">
-          <div className="location-info">
-            <span className="location-icon">📍</span>
-            <div className="location-details">
-              <div className="location-address">{selectedLocation.address}</div>
-              {selectedLocation.name && (
-                <div className="location-name">{selectedLocation.name}</div>
-              )}
-              <div className="location-coords">
-                {selectedLocation.coordinates.lat.toFixed(6)}, {selectedLocation.coordinates.lng.toFixed(6)}
-              </div>
+        <div className="location-info">
+          <div className="location-details">
+            <div className="location-address">{selectedLocation.address}</div>
+            {selectedLocation.name && (
+              <div className="location-name">{selectedLocation.name}</div>
+            )}
+            <div className="location-coords">
+              {selectedLocation.coordinates.lat.toFixed(6)},{" "}
+              {selectedLocation.coordinates.lng.toFixed(6)}
             </div>
           </div>
         </div>
@@ -297,7 +295,9 @@ const LocationAutocomplete = ({
       {!selectedLocation && !isLoading && inputValue && (
         <div className="no-location-prompt">
           <p>📍 Can you specify a more precise location?</p>
-          <p className="help-text">Try adding street number, cross-street, or nearby landmark</p>
+          <p className="help-text">
+            Try adding street number, cross-street, or nearby landmark
+          </p>
         </div>
       )}
 

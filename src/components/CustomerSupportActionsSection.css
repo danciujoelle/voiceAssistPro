@@ -15,8 +15,11 @@
 
 .action-card {
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .action-header {
@@ -75,43 +78,46 @@
 }
 
 .action-steps h5 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 1.5rem 0;
   color: #374151;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
+  text-align: center;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.action-steps h5::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background-color: #f59e0b;
+  border-radius: 2px;
 }
 
 .steps-list {
-  margin: 0;
-  padding-left: 1.25rem;
+  margin: 0 auto;
+  padding-left: 0;
   list-style: none;
   counter-reset: step-counter;
+  max-width: 90%;
+  text-align: center;
 }
 
 .step-item {
-  margin-bottom: 0.75rem;
-  padding-left: 2rem;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1rem;
   position: relative;
   color: #4b5563;
   line-height: 1.5;
   counter-increment: step-counter;
-}
-
-.step-item::before {
-  content: counter(step-counter);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1.5rem;
-  height: 1.5rem;
-  background: #e5e7eb;
-  color: #6b7280;
-  border-radius: 50%;
+  background-color: #f8f9fa;
+  border-radius: 8px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 600;
 }
 
 .step-item.completed {
@@ -145,12 +151,12 @@
   .context-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .action-header {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .action-status {
     align-self: flex-start;
   }
@@ -194,50 +200,50 @@
     background: #1f2937;
     border-color: #374151;
   }
-  
+
   .customer-support-actions-section h3 {
     color: #f9fafb;
   }
-  
+
   .action-card {
     border-color: #374151;
   }
-  
+
   .action-header {
     background: #374151;
     border-color: #4b5563;
   }
-  
+
   .action-title {
     color: #f9fafb;
   }
-  
+
   .action-description {
     color: #d1d5db;
   }
-  
+
   .action-steps {
     border-color: #4b5563;
   }
-  
+
   .action-steps h5,
   .customer-context h5 {
     color: #f3f4f6;
   }
-  
+
   .step-item {
     color: #d1d5db;
   }
-  
+
   .step-item::before {
-    background: #4b5563;
-    color: #d1d5db;
+    background: #f59e0b;
+    color: #ffffff;
   }
-  
+
   .context-label {
     color: #9ca3af;
   }
-  
+
   .context-value {
     color: #f9fafb;
   }
@@ -248,13 +254,13 @@
   .action-card {
     border: 2px solid #000;
   }
-  
+
   .action-status.pending {
     background: #fff;
     color: #000;
     border: 2px solid #000;
   }
-  
+
   .action-status.completed {
     background: #000;
     color: #fff;

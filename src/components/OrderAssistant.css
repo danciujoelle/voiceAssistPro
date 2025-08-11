@@ -77,7 +77,7 @@
 }
 
 .confirm-order-btn:hover {
-  background-color: #1e7e34;
+  background-color: #4285f4;
 }
 
 .confirm-order-btn:disabled {
@@ -388,7 +388,7 @@
 .order-assistant .location-confirmed .status-text {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #155724;
+  color: #1976d2;
 }
 
 .order-assistant .order-details-in-map {

@@ -4,7 +4,34 @@
 }
 
 .guidance-steps-section .section-header {
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.guidance-steps-section .section-header .section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.guidance-steps-section .section-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.guidance-steps-section .section-header-base {
+  display: none !important;
 }
 
 .no-data-message {
@@ -40,27 +67,26 @@
 .steps-list ol {
   margin: 0;
   padding: 0;
-list-style: none;
+  list-style: none;
 }
 
 .step-item {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
-  border: 1px solid #e0e0e0;
-  border-left: 4px solid #ff9800;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
   border-radius: 0.75rem;
   transition: all 0.2s ease;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .step-item:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border-left-color: #f57c00;
+  border-color: #007bff;
 }
 
 .step-item:last-child {
@@ -71,12 +97,12 @@ box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  min-width: 24px;
+  height: 24px;
+  background: #007bff;
   color: white;
   border-radius: 50%;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
   flex-shrink: 0;
   margin-top: 0.1rem;
@@ -98,23 +124,6 @@ box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 /* Add numbering effect with CSS counter */
 
 /* Priority indicators */
-.step-item.priority-high {
-  border-left-color: #dc3545;
-  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
-}
-
-.step-item.priority-high .step-number {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-}
-
-.step-item.priority-medium {
-  border-left-color: #ffc107;
-  background: linear-gradient(135deg, #fffdf0 0%, #ffffff 100%);
-}
-
-.step-item.priority-medium .step-number {
-  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

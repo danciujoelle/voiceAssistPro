@@ -12,7 +12,7 @@
 }
 
 .delivery-map-view .map-header {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: #28a745;
   color: white;
   padding: 15px 20px;
   border-radius: 12px 12px 0 0;
@@ -67,7 +67,7 @@
 
 /* Delivery-specific marker info window styling */
 .delivery-info-window {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* font-family removed to use global font */
 }
 
 .delivery-info-window h3 {

@@ -7,14 +7,14 @@ import './App.css'
 function App() {
   return (
     <div className="app">
-      <TabsComponent defaultTab={0}>
-        <TabPanel label="Dispatcher Copilot" icon="🚑">
+      <TabsComponent defaultTab={0} appLogo="/voice_assist.png">
+        <TabPanel label="Dispatcher Copilot">
           <EmergencyAssistant />
         </TabPanel>
-        <TabPanel label="Order Copilot" icon="🛒">
+        <TabPanel label="Order Copilot">
           <OrderAssistant />
         </TabPanel>
-        <TabPanel label="Customer Support" icon="🎧">
+        <TabPanel label="Customer Support">
           <CustomerSupportAssistant />
         </TabPanel>
       </TabsComponent>

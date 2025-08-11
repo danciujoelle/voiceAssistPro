@@ -1,188 +1,205 @@
-/* Triage Analysis Section specific styles */
 .triage-section {
-  overflow-y: auto;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .triage-section .section-header {
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.triage-section .section-header .section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.triage-section .section-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.triage-section .section-header-base {
+  display: none !important;
+}
+
+.triage-section .section-header-base .section-icon {
+  display: none !important;
+}
+
+.triage-section .section-header-base h2 {
+  display: none !important;
 }
 
 .no-data-message {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
-  padding: 2rem 1rem;
-  color: #6c757d;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
 
 .no-data-message p {
-  margin: 0.5rem 0;
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #666;
 }
 
 .help-text {
-  font-size: 0.875rem;
-  font-style: italic;
+  font-size: 0.9rem;
+  color: #888;
 }
 
-.emergency-info {
-  flex-shrink: 0;
+.triage-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
-/* Units display styles */
+.triage-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
 
+.info-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0f2f5;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  line-height: 1.1;
+  margin: 0;
+}
 
-/* Override for units info-item to allow vertical layout */
-.info-item.units {
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 0.5rem;
-  border: 1px solid #e9ecef;
+.info-badge .badge-icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  margin: 0;
+  font-size: 0;
+}
+
+.info-badge.emergency {
+  background: #ffe5e5;
+  color: #d32f2f;
+}
+
+.info-badge.urgency {
+  background: #ffeccc;
+  color: #ef6c00;
+}
+
+.required-units-container {
+  margin-top: 20px;
 }
 
 .units-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  margin-bottom: 16px;
 }
 
-.units-label {
+.units-title {
+  font-size: 1.2rem;
+  margin: 0;
   font-weight: 600;
-  color: #343a40;
+  color: #333;
 }
 
-/* Structured units display */
 .units-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  width: 100%;
+  flex-wrap: nowrap; /* force all unit cards on a single row */
+  gap: 12px;
+  overflow-x: auto; /* allow horizontal scroll if they overflow */
 }
 
 .unit-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border: 1px solid #dee2e6;
-  border-radius: 0.5rem;
-  font-size: 0.85rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 100px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-  min-height: 36px;
-  flex: 0 0 auto;
 }
 
-.unit-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  border-color: #adb5bd;
-}
-
-.unit-card .unit-icon {
-  font-size: 1.1rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.unit-card .unit-name {
-  font-weight: 600;
-  color: #343a40;
-  font-size: 0.85rem;
-}
-
-.no-units {
-  color: #6c757d;
-  font-style: italic;
-  padding: 0.5rem;
-}
-
-/* Responsive adjustments for units */
-@media (max-width: 768px) {
-  .units-grid {
-    gap: 0.4rem;
-  }
-
-  .unit-card {
-    justify-content: flex-start;
-    padding: 0.4rem 0.6rem;
-    min-height: 32px;
-    flex: 1 1 calc(50% - 0.2rem);
-  }
-
-  .unit-card .unit-icon {
-    font-size: 1rem;
-  }
-
-  .unit-card .unit-name {
-    font-size: 0.8rem;
-  }
-}
-
-/* Dispatch Units Section */
-.dispatch-section {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e9ecef;
-}
-
-.dispatch-button {
+.unit-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  color: #f8f9fa;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-  color: white;
+  margin-bottom: 8px;
+}
+
+.unit-icon {
+  font-size: 1.5rem;
+}
+
+.unit-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  text-align: center;
+}
+
+.no-units {
+  color: #888;
+  font-style: italic;
+}
+
+.dispatch-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.dispatch-button {
+  background-color: #f5f5f5;
   border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
+  border-radius: 20px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.dispatch-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
-}
-
-.dispatch-button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+.dispatch-button:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
 }
 
 .dispatch-button:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
   opacity: 0.6;
-  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .dispatch-icon {
-  font-size: 1.1rem;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-
-  0%,
-  50%,
-  100% {
-    opacity: 1;
-  }
-
-  25%,
-  75% {
-    opacity: 0.7;
-  }
+  margin-right: 8px;
 }

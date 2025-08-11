@@ -12,33 +12,35 @@
 }
 
 .unit-dispatch-section .section-header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #f8f9fa;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
 }
 
-.unit-dispatch-section .section-icon {
-  font-size: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.unit-dispatch-section .section-header .section-icon {
   color: white;
-  padding: 0.5rem;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  font-size: 1rem;
 }
 
-.unit-dispatch-section h2 {
+.unit-dispatch-section .section-header h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #333;
+}
+
+.unit-dispatch-section .section-header-base {
+  display: none !important;
 }
 
 .dispatch-info {
@@ -53,14 +55,6 @@
   margin: 0.5rem 0;
   font-size: 0.875rem;
   font-weight: 500;
-}
-
-.incident-location {
-  color: #e67e22;
-}
-
-.units-count {
-  color: #e74c3c;
 }
 
 .units-routes-grid {
@@ -101,7 +95,6 @@
 
 .unit-icon {
   font-size: 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 0.5rem;
   border-radius: 50%;

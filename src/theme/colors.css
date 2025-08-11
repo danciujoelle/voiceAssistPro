@@ -1,0 +1,28 @@
+/* src/theme/colors.css */
+:root {
+  --color-white: #ffffff;
+  --color-dark-blue: #001f3f;
+  --color-medium-gray: #6c757d;
+  --color-dark-gray: #343a40;
+  --color-pink: #ff1493;
+  --color-light-blue: #7fdbff;
+  --color-blue: #0074d9;
+  --color-light-gray: #f8f9fa;
+  --color-gray: #adb5bd;
+  --color-black: #111111;
+  --color-hot-pink: #ff69b4;
+  --color-deep-blue: #003366;
+  --color-navy: #001a35;
+  --color-cyan: #00bfff;
+  --color-magenta: #e6007a;
+  --color-dark-pink: #c2185b;
+  --color-light-pink: #ffc0cb;
+  --color-silver: #dee2e6;
+  --color-charcoal: #23272b;
+  --color-steel: #495057;
+  --color-rose: #ff3366;
+  --color-sky: #87ceeb;
+  --color-midnight: #191970;
+  --color-ice: #e3f2fd;
+  --color-ash: #ced4da;
+}

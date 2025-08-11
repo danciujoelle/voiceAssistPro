@@ -8,6 +8,7 @@ const AudioRecorder = ({ onAudioRecorded }) => {
   const [recordingTime, setRecordingTime] = useState(0);
   const [hasPermission, setHasPermission] = useState(null);
   const [error, setError] = useState("");
+  const [recordingComplete, setRecordingComplete] = useState(false);
 
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -132,6 +133,7 @@ const AudioRecorder = ({ onAudioRecorded }) => {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
       setIsPaused(false);
+      setRecordingComplete(true);
       clearInterval(timerRef.current);
     }
   };
@@ -177,16 +179,7 @@ const AudioRecorder = ({ onAudioRecorded }) => {
       {error && <div className="error-message">{error}</div>}
 
       <div className="recording-controls">
-        {!isRecording ? (
-          <button
-            onClick={startRecording}
-            className="record-btn start-recording"
-            disabled={hasPermission === false}
-            aria-label="Start recording"
-          >
-            <span className="record-icon">🎙️</span> Start Recording
-          </button>
-        ) : (
+        {isRecording ? (
           <div className="recording-active">
             <div className="recording-info">
               <div className="recording-indicator">
@@ -213,6 +206,17 @@ const AudioRecorder = ({ onAudioRecorded }) => {
               </button>
             </div>
           </div>
+        ) : !recordingComplete ? (
+          <button
+            onClick={startRecording}
+            className="record-btn start-recording"
+            disabled={hasPermission === false}
+            aria-label="Start recording"
+          >
+            <span className="record-icon">🎙️</span> Start Recording
+          </button>
+        ) : (
+          <></>
         )}
       </div>
     </div>

@@ -1,143 +1,234 @@
-/* Incident Location Section specific styles */
+/* Redesigned Incident Location Section */
 .location-section {
-  display: flex;
-  flex-direction: column;
+  background: #ffffff;
+  overflow-y: auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  margin: 0 auto;
+  width: 100%;
   gap: 1rem;
-  height: 100vh;
-  max-height: 100vh;
-  padding: 1rem;
-  box-sizing: border-box;
-  overflow: hidden;
+}
+
+/* Hide unified base */
+.location-section .section-header-base {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0 0 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Hidden state before a location is available */
+.location-section.location-hidden {
+  display: none;
 }
 
 .location-section .section-header {
-  flex-shrink: 0;
-}
-
-.location-info {
-  margin-bottom: 1rem;
-  flex-shrink: 0;
-}
-
-.location-detected {
+   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0.75rem;
-  background-color: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 6px;
-  color: #155724;
-  font-size: 0.875rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
 }
 
-.location-detected strong {
+.location-section .section-header .section-icon {
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.location-section .section-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Detected banner */
+.location-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(90deg, #e5f6eb, #f3fbf6);
+  border: 1px solid #c6ead4;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #175f33;
+}
+.location-banner strong {
   color: #0d4f3c;
 }
-
-.no-location-message {
-  text-align: center;
-  padding: 1rem;
-  color: #6c757d;
-  margin-bottom: 1rem;
-  flex-shrink: 0;
-}
-
-.no-location-message p {
-  margin: 0.5rem 0;
-}
-
-.help-text {
-  font-size: 0.875rem;
-  font-style: italic;
-}
-
-.map-view {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.map-container {
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-  position: relative;
-}
-
-/* Location autocomplete section */
-.location-autocomplete-section {
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-  flex-shrink: 0;
-}
-
-/* Location help text */
-.location-help {
-  margin: 0.5rem 0 0 0;
-  font-size: 0.875rem;
-  color: #6c757d;
-  font-style: italic;
-}
-
-/* Location confirmed status */
-.location-confirmed {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  background: #d4edda;
-  border: 1px solid #c3e6cb;
-  border-radius: 6px;
-  color: #155724;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
-.status-icon {
+.location-banner .banner-icon {
   font-size: 1.1rem;
 }
 
-.status-text {
-  font-size: 0.9rem;
+.location-help {
+  margin: 0.5rem 0 0 2rem;
+  font-size: 0.8rem;
+  color: #5d6d63;
+  font-style: italic;
 }
 
-/* Responsive design for location section */
-@media (max-width: 768px) {
+/* Steps indicator */
+.location-steps {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0 0.2rem;
+}
+.location-steps .step {
+  flex: 1;
+  position: relative;
+  text-align: center;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.45rem 0.25rem 0.4rem;
+  background: #f2f4f5;
+  color: #7a838a;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+.location-steps .step.active {
+  background: #e3f3ff;
+  color: #0d5586;
+  box-shadow: 0 0 0 1px #b9e1fb inset;
+}
+.location-steps .step.complete {
+  background: #d6f6df;
+  color: #176c38;
+  box-shadow: 0 0 0 1px #b0e9c1 inset;
+}
+
+/* Autocomplete wrapper refinement */
+.location-autocomplete-section {
+  padding: 0.75rem 1rem 0.9rem;
+  background: #fafbfc;
+  border: 1px solid #e5e8eb;
+  border-radius: 12px;
+}
+
+.location-autocomplete-section .input-container:focus-within {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.15);
+}
+.location-autocomplete-section .confirm-button {
+  background: #1976d2;
+}
+.location-autocomplete-section .confirm-button:hover {
+  background: #4285f4;
+}
+
+/* Confirmation chip */
+.location-confirmed {
+  background: #f8f9fa;
+  border: 1px solid #4285f4;
+  color: #4285f4;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: -0.25rem;
+}
+.location-confirmed .status-icon {
+  font-size: 1rem;
+}
+.location-confirmed .status-text {
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Map adjustments */
+.location-section .map-view {
+  background: #f8fafb;
+  border: 1px solid #e5e8eb;
+  border-radius: 14px;
+  padding: 1rem 1rem 0;
+}
+.location-section .map-view .map-header {
+  padding: 0 0 0.5rem;
+}
+.location-section .map-view .map-header h3 {
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: #334;
+}
+.location-section .map-view .map-container {
+  min-height: 420px;
+}
+
+/* Refine previous styles (legacy selectors retained for compatibility) */
+.location-detected {
+  display: none;
+}
+.no-location-message {
+  background: #fff8e6;
+  border: 1px solid #f2d28b;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  color: #6d5411;
+  font-size: 0.85rem;
+}
+.no-location-message p {
+  margin: 0.25rem 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
   .location-section {
-    height: 100vh;
-    max-height: 100vh;
-    padding: 0.75rem;
+    padding: 1rem 1rem 1.25rem;
   }
-
-  .map-view {
-    min-height: 0;
+  .location-section .map-view {
+    padding: 0.85rem 0.85rem 0;
   }
-
-  .map-container {
-    min-height: 0;
+  .location-section .map-view .map-container {
+    min-height: 380px;
+  }
+}
+@media (max-width: 640px) {
+  .location-section {
+    gap: 0.85rem;
+  }
+  .location-steps .step {
+    font-size: 0.58rem;
+    padding: 0.4rem 0.25rem;
+  }
+  .location-section .map-view .map-container {
+    min-height: 340px;
   }
 }
 
-@media (max-width: 480px) {
+/* High contrast support */
+@media (prefers-contrast: high) {
   .location-section {
-    padding: 0.5rem;
+    border: 2px solid #000;
   }
-
-  .map-view {
-    min-height: 0;
-  }
-
-  .map-container {
-    min-height: 0;
-  }
-
   .location-autocomplete-section {
-    padding: 0.75rem;
+    border-color: #000;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .location-steps .step {
+    transition: none;
   }
 }

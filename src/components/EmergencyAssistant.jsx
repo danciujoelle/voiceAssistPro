@@ -11,6 +11,7 @@ const EmergencyAssistant = () => {
   const [emergencyData, setEmergencyData] = useState(null);
   const [isDispatchTriggered, setIsDispatchTriggered] = useState(false);
   const [confirmedLocation, setConfirmedLocation] = useState(null);
+  const [dispatchEventId, setDispatchEventId] = useState(0);
 
   const handleTranscriptGenerated = (newTranscript) => {
     console.log("Transcript generated:", newTranscript);
@@ -23,6 +24,7 @@ const EmergencyAssistant = () => {
   const handleDispatchUnits = (units) => {
     console.log("Units dispatched:", units);
     setIsDispatchTriggered(true);
+    setDispatchEventId((prev) => prev + 1);
   };
 
   const handleLocationConfirmed = (locationData) => {
@@ -44,8 +46,8 @@ const EmergencyAssistant = () => {
           onEmergencyDataGenerated={handleEmergencyDataGenerated}
         />
 
-        <TriageAnalysisSection 
-          emergencyData={emergencyData} 
+        <TriageAnalysisSection
+          emergencyData={emergencyData}
           onDispatchUnits={handleDispatchUnits}
         />
 
@@ -55,16 +57,19 @@ const EmergencyAssistant = () => {
 
         <GuidanceStepsSection guidanceSteps={emergencyData?.guidanceSteps} />
 
-        <IncidentLocationSection 
+        <IncidentLocationSection
           emergencyData={emergencyData}
           onLocationConfirmed={handleLocationConfirmed}
         />
 
         <UnitDispatchSection
           emergencyData={emergencyData}
-          incidentLocation={confirmedLocation?.address || emergencyData?.location}
+          incidentLocation={
+            confirmedLocation?.address || emergencyData?.location
+          }
           incidentCoordinates={confirmedLocation?.coordinates}
           isDispatchTriggered={isDispatchTriggered}
+          dispatchEventId={dispatchEventId}
         />
       </main>
     </div>

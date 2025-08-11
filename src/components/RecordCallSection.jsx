@@ -401,70 +401,110 @@ const RecordCallSection = ({
     await processAudioWithOpenAI(audioFile);
   };
 
+  // State for tab selection
+  const [activeTab, setActiveTab] = useState("prerecorded"); // "record" or "prerecorded"
+
   return (
     <section className="record-section">
       <div className="section-header">
         <span className="section-icon">🎤</span>
-        <h2>
-          {mode === "customer-support" ? "Record Customer Call" : "Record Call"}
-        </h2>
+        <h2>Record Audio</h2>
+      </div>
+
+      <div className="record-tabs">
+        <label
+          className={`record-tab ${
+            activeTab === "prerecorded" ? "active" : ""
+          }`}
+        >
+          <input
+            type="radio"
+            name="recordType"
+            value="prerecorded"
+            checked={activeTab === "prerecorded"}
+            onChange={() => setActiveTab("prerecorded")}
+            className="record-radio"
+          />
+          <span className="radio-custom"></span>
+          Pre-Recorded
+        </label>
+        <label
+          className={`record-tab ${activeTab === "record" ? "active" : ""}`}
+        >
+          <input
+            type="radio"
+            name="recordType"
+            value="record"
+            checked={activeTab === "record"}
+            onChange={() => setActiveTab("record")}
+            className="record-radio"
+          />
+          <span className="radio-custom"></span>
+          Record New
+        </label>
       </div>
 
       <div className="record-buttons-container">
-        <AudioRecorder onAudioRecorded={handleAudioRecorded} />
+        {activeTab === "record" && (
+          <>
+            <AudioRecorder onAudioRecorded={handleAudioRecorded} />
+          </>
+        )}
 
-        <div className="audio-file-section">
-          <select
-            value={selectedAudioFile}
-            onChange={handleAudioFileSelect}
-            className="audio-file-select"
-          >
-            {audioFiles.map((file) => (
-              <option key={file.value} value={file.value}>
-                {file.name}
-              </option>
-            ))}
-          </select>
+        {activeTab === "prerecorded" && (
+          <div className="audio-file-section">
+            <select
+              value={selectedAudioFile}
+              onChange={handleAudioFileSelect}
+              className="audio-file-select"
+            >
+              {audioFiles.map((file) => (
+                <option key={file.value} value={file.value}>
+                  {file.name}
+                </option>
+              ))}
+            </select>
 
-          {selectedAudioFile && (
-            <div className="audio-controls">
-              <button
-                onClick={handlePlayAudio}
-                className="play-button"
-                title={isPlaying ? "Pause Audio" : "Play Audio"}
-              >
-                {isPlaying ? "⏸️ Pause" : "▶️ Preview"}
-              </button>
-              <button
-                onClick={handleProcessSelectedAudio}
-                className="process-button"
-                disabled={isProcessing}
-              >
-                🔄 Process Audio
-              </button>
-            </div>
-          )}
+            {selectedAudioFile && (
+              <div className="audio-controls">
+                <button
+                  onClick={handlePlayAudio}
+                  className="play-button"
+                  title={isPlaying ? "Pause Audio" : "Play Audio"}
+                >
+                  {isPlaying ? "Pause" : "Preview"}
+                </button>
+                <button
+                  onClick={handleProcessSelectedAudio}
+                  className="process-button"
+                  disabled={isProcessing}
+                >
+                  Process Audio
+                </button>
+              </div>
+            )}
 
-          <audio
-            ref={audioRef}
-            src={selectedAudioFile ? `/${selectedAudioFile}` : ""}
-            onEnded={handleAudioEnded}
-            style={{ display: "none" }}
-          >
-            <track kind="captions" />
-          </audio>
-        </div>
+            <audio
+              ref={audioRef}
+              src={selectedAudioFile ? `/${selectedAudioFile}` : ""}
+              onEnded={handleAudioEnded}
+              style={{ display: "none" }}
+            >
+              <track kind="captions" />
+            </audio>
+          </div>
+        )}
       </div>
 
       {isProcessing && (
         <div className="processing-indicator">
-          <span>🔄 Processing audio...</span>
+          <span>Processing audio...</span>
         </div>
       )}
 
       {error && (
         <div className="error-message">
-          <span>❌ {error}</span>
+          <span>{error}</span>
         </div>
       )}
 

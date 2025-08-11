@@ -25,7 +25,9 @@ const renderUnitsWithIcons = (unitsString) => {
     <div className="units-grid">
       {units.map((unit) => (
         <div key={unit} className="unit-card">
-          <span className="unit-icon">{getUnitIcon(unit)}</span>
+          <div className="unit-icon-wrapper">
+            <span className="unit-icon">{getUnitIcon(unit)}</span>
+          </div>
           <span className="unit-name">{unit}</span>
         </div>
       ))}
@@ -70,19 +72,22 @@ const TriageAnalysisSection = ({ emergencyData, onDispatchUnits }) => {
         <h2>Triage Analysis</h2>
       </div>
 
-      <div className="emergency-info">
-        <div className="info-item emergency">
-          <span className="status-dot emergency"></span>
-          <span>Emergency: {emergencyData.type}</span>
+      <div className="triage-card">
+        <div className="triage-summary">
+          <div className="info-badge emergency">
+            <span className="badge-icon">🔴</span>
+            <span>Emergency: {emergencyData.type}</span>
+          </div>
+
+          <div className="info-badge urgency">
+            <span className="badge-icon">🔶</span>
+            <span>Urgency: {emergencyData.urgency}</span>
+          </div>
         </div>
-        <div className="info-item urgency">
-          <span className="status-dot urgency"></span>
-          <span>Urgency: {emergencyData.urgency}</span>
-        </div>
-        <div className="info-item units">
+
+        <div className="required-units-container">
           <div className="units-header">
-            <span className="status-dot units"></span>
-            <span className="units-label">Required Units:</span>
+            <h3 className="units-title">Required Units:</h3>
           </div>
           {renderUnitsWithIcons(emergencyData.units)}
         </div>
