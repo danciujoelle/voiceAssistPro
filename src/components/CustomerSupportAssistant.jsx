@@ -11,10 +11,14 @@ const CustomerSupportAssistant = () => {
 
   const handleTranscriptGenerated = (newTranscript) => {
     console.log("Customer support transcript generated:", newTranscript);
+    // Reset action completion when a new transcript is generated
+    setIsActionTaken(false);
   };
 
   const handleCustomerSupportDataGenerated = (data) => {
+    // Update analysis data and ensure action status resets for new processing
     setCustomerSupportData(data);
+    setIsActionTaken(false);
   };
 
   const handleActionTaken = (action) => {

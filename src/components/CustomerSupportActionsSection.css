@@ -13,6 +13,17 @@
   font-weight: 600;
 }
 
+/* Placeholder shown when there is no data yet */
+.actions-placeholder {
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-style: italic;
+  background: #f9fafb;
+  border: 1px dashed #e5e7eb;
+  border-radius: 8px;
+}
+
 .action-card {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -194,45 +205,45 @@
   color: #6b7280;
 }
 
-/* Dark mode support */
+/* Dark mode: keep light styling for consistency with other panels */
 @media (prefers-color-scheme: dark) {
   .customer-support-actions-section {
-    background: #1f2937;
-    border-color: #374151;
+    background: white;
+    border-color: #e5e7eb;
   }
 
   .customer-support-actions-section h3 {
-    color: #f9fafb;
+    color: #1f2937;
   }
 
   .action-card {
-    border-color: #374151;
+    border-color: #e5e7eb;
   }
 
   .action-header {
-    background: #374151;
-    border-color: #4b5563;
+    background: #f8fafc;
+    border-color: #e5e7eb;
   }
 
   .action-title {
-    color: #f9fafb;
+    color: #1f2937;
   }
 
   .action-description {
-    color: #d1d5db;
+    color: #6b7280;
   }
 
   .action-steps {
-    border-color: #4b5563;
+    border-color: #e5e7eb;
   }
 
   .action-steps h5,
   .customer-context h5 {
-    color: #f3f4f6;
+    color: #374151;
   }
 
   .step-item {
-    color: #d1d5db;
+    color: #4b5563;
   }
 
   .step-item::before {
@@ -241,11 +252,11 @@
   }
 
   .context-label {
-    color: #9ca3af;
+    color: #6b7280;
   }
 
   .context-value {
-    color: #f9fafb;
+    color: #1f2937;
   }
 }
 

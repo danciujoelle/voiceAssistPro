@@ -14,10 +14,48 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* App-wide slim scrollbar variables */
+  --sb-size: 6px;
+  --sb-track: #f1f1f1;
+  --sb-thumb: #bdbdbd;
+  --sb-thumb-hover: #9a9a9a;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* App-wide scrollbar styling */
+/* Firefox */
+html, body, * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sb-thumb) var(--sb-track);
+}
+
+/* WebKit (Chromium/Edge/Safari) */
+*::-webkit-scrollbar {
+  width: var(--sb-size);
+  height: var(--sb-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--sb-track);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover);
+}
+
+/* Respect High Contrast/Forced Colors */
+@media (forced-colors: active) {
+  * { scrollbar-color: auto; }
 }
 
 body {

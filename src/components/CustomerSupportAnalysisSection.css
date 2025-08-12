@@ -118,32 +118,27 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* Dark mode support */
+/* Dark mode: keep light styling for consistency with other panels */
 @media (prefers-color-scheme: dark) {
   .customer-support-analysis-section {
-    background: #1f2937;
-    border-color: #374151;
+    background: white;
+    border-color: #e5e7eb;
   }
-  
   .customer-support-analysis-section h3 {
-    color: #f9fafb;
+    color: #1f2937;
   }
-  
   .analysis-placeholder {
-    color: #9ca3af;
+    color: #6b7280;
   }
-  
   .analysis-item {
-    background: #374151;
-    border-color: #4b5563;
+    background: #f9fafb;
+    border-color: #e5e7eb;
   }
-  
   .analysis-label {
-    color: #d1d5db;
+    color: #374151;
   }
-  
   .analysis-value {
-    color: #f9fafb;
+    color: #1f2937;
   }
 }
 

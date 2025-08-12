@@ -5,6 +5,7 @@
   min-height: 100%;
   padding-bottom: 2rem;
   height: 90vh;
+  padding: 20px;
 }
 
 .customer-support-logo {
@@ -40,18 +41,21 @@
   grid-template-columns: 1fr;
   gap: 1.5rem;
   flex: 1;
+  align-items: stretch; /* stretch items to equal height */
 }
 
-/* Responsive layout for larger screens */
+/* Ensure each section fills its grid cell height */
+.assistant-main > section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* One-row layout for larger screens: place all 4 sections in columns */
 @media (min-width: 1024px) {
   .assistant-main {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: auto;
     gap: 1.5rem;
-  }
-  
-  .record-call-section {
-    grid-column: 1 / -1;
   }
 }
 

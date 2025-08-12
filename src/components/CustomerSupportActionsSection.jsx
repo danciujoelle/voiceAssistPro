@@ -3,7 +3,14 @@ import './CustomerSupportActionsSection.css'
 
 const CustomerSupportActionsSection = ({ customerSupportData, isActionTaken }) => {
   if (!customerSupportData) {
-    return null
+    return (
+      <section className="customer-support-actions-section">
+        <h3>Support Actions</h3>
+        <div className="actions-placeholder">
+          <p>Record or process a call to see recommended actions.</p>
+        </div>
+      </section>
+    )
   }
 
   const getActionDetails = (action) => {

@@ -6,7 +6,6 @@ import GoogleMapsWrapper from "./GoogleMapsWrapper";
 
 const DeliveryLocationSection = ({ orderData, onLocationConfirmed }) => {
   const [confirmedLocation, setConfirmedLocation] = useState(null);
-  const [isLocationConfirmed, setIsLocationConfirmed] = useState(false);
 
   const handleLocationSelected = (locationData) => {
     console.log("Delivery location selected:", locationData);
@@ -17,7 +16,6 @@ const DeliveryLocationSection = ({ orderData, onLocationConfirmed }) => {
   const handleLocationConfirmedInternal = (locationData) => {
     console.log("Delivery location confirmed:", locationData);
     setConfirmedLocation(locationData);
-    setIsLocationConfirmed(true);
     // Notify parent component
     if (onLocationConfirmed) {
       onLocationConfirmed(locationData);
@@ -42,28 +40,6 @@ const DeliveryLocationSection = ({ orderData, onLocationConfirmed }) => {
         </div>
 
         <div className="location-content">
-          <div className="address-info">
-            {orderData && orderData.deliveryAddress ? (
-              <div className="location-info">
-                <p className="location-detected">
-                  📦 Delivery address from order:{" "}
-                  <strong>{orderData.deliveryAddress}</strong>
-                </p>
-                {!isLocationConfirmed && (
-                  <p className="location-help">
-                    Please confirm or refine the delivery location:
-                  </p>
-                )}
-              </div>
-            ) : (
-              <div className="no-location-message">
-                <p>🏠 No specific delivery address provided in the order.</p>
-                <p className="help-text">
-                  Please enter the delivery location below:
-                </p>
-              </div>
-            )}
-          </div>
 
           {/* Location Autocomplete */}
           <div className="location-autocomplete-section">
@@ -78,14 +54,6 @@ const DeliveryLocationSection = ({ orderData, onLocationConfirmed }) => {
               }
             />
           </div>
-
-          {/* Location Status */}
-          {isLocationConfirmed && confirmedLocation && (
-            <div className="location-confirmed">
-              <span className="status-icon">✅</span>
-              <span className="status-text">Delivery location confirmed</span>
-            </div>
-          )}
 
           {/* Map Only - No Headers */}
           <MapView
