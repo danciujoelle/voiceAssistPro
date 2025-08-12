@@ -11,7 +11,6 @@
   width: 120px;
   height: 120px;
   object-fit: contain;
-  margin: 2rem 0 1rem 0;
   transform: scale(2);
 }
 
@@ -20,33 +19,69 @@
   /* 4 columns for the first four panels on one line */
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
-  padding: 1.5rem;
+  padding: 0 1.5rem;
   max-width: 1600px; /* widened to comfortably fit 4 columns */
   margin: 0 auto;
   width: 100%;
 }
 
 /* Row 1: first four sections each in its own column */
-.emergency-assistant .assistant-main > *:nth-child(1) { grid-column: 1; grid-row: 1; }
-.emergency-assistant .assistant-main > *:nth-child(2) { grid-column: 2; grid-row: 1; }
-.emergency-assistant .assistant-main > *:nth-child(3) { grid-column: 3; grid-row: 1; }
-.emergency-assistant .assistant-main > *:nth-child(4) { grid-column: 4; grid-row: 1; }
+.emergency-assistant .assistant-main > *:nth-child(1) {
+  grid-column: 1;
+  grid-row: 1;
+}
+.emergency-assistant .assistant-main > *:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+.emergency-assistant .assistant-main > *:nth-child(3) {
+  grid-column: 3;
+  grid-row: 1;
+}
+.emergency-assistant .assistant-main > *:nth-child(4) {
+  grid-column: 4;
+  grid-row: 1;
+}
 
 /* Row 2 & 3: incident location and unit dispatch full width */
-.emergency-assistant .assistant-main > *:nth-child(5) { grid-column: 1 / -1; grid-row: 2; }
-.emergency-assistant .assistant-main > *:nth-child(6) { grid-column: 1 / -1; grid-row: 3; }
+.emergency-assistant .assistant-main > *:nth-child(5) {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+.emergency-assistant .assistant-main > *:nth-child(6) {
+  grid-column: 1 / -1;
+  grid-row: 3;
+}
 
 /* Medium screens: fall back to 2-column layout */
 @media (max-width: 1300px) {
   .emergency-assistant .assistant-main {
     grid-template-columns: repeat(2, 1fr);
   }
-  .emergency-assistant .assistant-main > *:nth-child(1) { grid-column: 1; grid-row: 1; }
-  .emergency-assistant .assistant-main > *:nth-child(2) { grid-column: 2; grid-row: 1; }
-  .emergency-assistant .assistant-main > *:nth-child(3) { grid-column: 1; grid-row: 2; }
-  .emergency-assistant .assistant-main > *:nth-child(4) { grid-column: 2; grid-row: 2; }
-  .emergency-assistant .assistant-main > *:nth-child(5) { grid-column: 1 / -1; grid-row: 3; }
-  .emergency-assistant .assistant-main > *:nth-child(6) { grid-column: 1 / -1; grid-row: 4; }
+  .emergency-assistant .assistant-main > *:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(4) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(5) {
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(6) {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
 }
 
 /* Small screens: single column (kept existing breakpoint logic) */
@@ -56,13 +91,27 @@
     gap: 1rem;
     padding: 1rem;
   }
-  .emergency-assistant .assistant-main > * { grid-column: 1 !important; }
-  .emergency-assistant .assistant-main > *:nth-child(1) { grid-row: 1; }
-  .emergency-assistant .assistant-main > *:nth-child(2) { grid-row: 2; }
-  .emergency-assistant .assistant-main > *:nth-child(3) { grid-row: 3; }
-  .emergency-assistant .assistant-main > *:nth-child(4) { grid-row: 4; }
-  .emergency-assistant .assistant-main > *:nth-child(5) { grid-row: 5; }
-  .emergency-assistant .assistant-main > *:nth-child(6) { grid-row: 6; }
+  .emergency-assistant .assistant-main > * {
+    grid-column: 1 !important;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(1) {
+    grid-row: 1;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(2) {
+    grid-row: 2;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(3) {
+    grid-row: 3;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(4) {
+    grid-row: 4;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(5) {
+    grid-row: 5;
+  }
+  .emergency-assistant .assistant-main > *:nth-child(6) {
+    grid-row: 6;
+  }
 }
 
 @media (max-width: 768px) {

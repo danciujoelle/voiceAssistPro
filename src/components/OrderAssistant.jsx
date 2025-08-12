@@ -64,10 +64,6 @@ const OrderSummarySection = ({ orderData }) => {
           <h3>📝 Notes:</h3>
           <p className="summary-value">{orderData.additionalNotes || "None"}</p>
         </div>
-
-        <div className="order-actions">
-          <button className="confirm-order-btn">✅ Confirm Order</button>
-        </div>
       </div>
     </section>
   );
@@ -113,6 +109,11 @@ const OrderAssistant = () => {
 
   return (
     <div className="order-assistant">
+      <img
+        src="/order_copilot.png"
+        alt="Order Copilot"
+        className="order-logo"
+      />
       <main className="assistant-main">
         <RecordCallSection
           onTranscriptGenerated={handleTranscriptGenerated}

@@ -24,10 +24,11 @@ const CustomerSupportAssistant = () => {
 
   return (
     <div className="customer-support-assistant">
-      <div className="assistant-header">
-        <h2>Customer Support Copilot</h2>
-        <p>AI-powered customer support assistant for call analysis and recommendations</p>
-      </div>
+      <img
+        src="/customer_support.png"
+        alt="Customer Support"
+        className="customer-support-logo"
+      />
 
       <main className="assistant-main">
         <RecordCallSection
@@ -36,8 +37,8 @@ const CustomerSupportAssistant = () => {
           mode="customer-support"
         />
 
-        <CustomerSupportAnalysisSection 
-          customerSupportData={customerSupportData} 
+        <CustomerSupportAnalysisSection
+          customerSupportData={customerSupportData}
           onActionTaken={handleActionTaken}
         />
 

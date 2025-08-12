@@ -1,8 +1,17 @@
 /* Order Assistant Styles */
 .order-assistant {
-  height: 90vh;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  padding-bottom: 2rem;
+}
+
+.order-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  transform: scale(1.5);
 }
 
 .order-assistant .assistant-main {
@@ -10,7 +19,6 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   gap: 1.5rem;
-  padding: 1.5rem;
   max-width: none;
   /* Remove max-width constraint */
   margin: 0 auto;
@@ -29,7 +37,6 @@
 .order-assistant .record-section,
 .order-assistant .triage-section,
 .order-assistant .location-section {
-  height: 100% !important;
   min-height: unset !important;
   max-height: unset !important;
   display: flex !important;
@@ -37,11 +44,8 @@
 }
 .order-summary {
   flex: 1;
-  margin-top: 1rem;
   padding: 1rem;
-  background-color: #f8f9fa;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
 }
 
 .order-summary h3 {
@@ -63,39 +67,16 @@
   color: #495057;
 }
 
-.confirm-order-btn {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.confirm-order-btn:hover {
-  background-color: #4285f4;
-}
-
-.confirm-order-btn:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
 /* Order Summary Content Styles */
 .order-summary-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   padding: 1rem 0;
 }
 
 .summary-item {
-  padding: 0.75rem;
-  background-color: #f8f9fa;
+  padding: 1rem;
   border: 1px solid #e9ecef;
   border-radius: 6px;
   margin-bottom: 0.5rem;
@@ -153,11 +134,6 @@
   color: #495057;
   font-weight: 500;
   flex: 1;
-}
-.order-actions {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #e9ecef;
 }
 /* Order-specific status dots */
 .status-dot.order-type {
